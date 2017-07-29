@@ -102,7 +102,8 @@ public class LD39 extends ApplicationAdapter {
             this.font.draw(this.batch, "GL_RENDERER = " + Gdx.gl.glGetString(GL20.GL_RENDERER), 10, Gdx.graphics.getHeight() - 30);
             this.font.draw(this.batch, "GL_VENDOR = " + Gdx.gl.glGetString(GL20.GL_VENDOR), 10, Gdx.graphics.getHeight() - 50);
             this.font.draw(this.batch, "GL_VERSION = " + Gdx.gl.glGetString(GL20.GL_VERSION), 10, Gdx.graphics.getHeight() - 70);
-
+            this.font.draw(this.batch, "WIDTH = " + Gdx.graphics.getWidth(), 10, Gdx.graphics.getHeight() - 90);
+            this.font.draw(this.batch, "HEIGHT = " + Gdx.graphics.getHeight(), 10, Gdx.graphics.getHeight() - 110);
             this.batch.end();
         }
     }
