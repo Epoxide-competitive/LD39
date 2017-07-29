@@ -48,7 +48,7 @@ public class RenderManager {
                 {
                     float renderX = (i * LD39.tileWidth) - x;
                     float renderY = (j * LD39.tileWidth) - y;
-                    if (renderX >= 0 && renderX <= Gdx.graphics.getWidth() && renderY >= 0 && renderY <= Gdx.graphics.getHeight())
+                    if (renderX >= 0 && renderX <= 10000 && renderY >= 0 && renderY <= 10000)
                         if (tileState.shouldRenderLayer(layer)) {
                             tileState.renderTile(batch, renderX, renderY, LD39.tileWidth);
 //                            Tile tile = tileState.getTile();
