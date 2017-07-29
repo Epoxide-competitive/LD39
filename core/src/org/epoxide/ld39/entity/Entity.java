@@ -9,4 +9,8 @@ public class Entity {
     public float moveX, moveY;
     public EnumRotation rotation;
     public World world;
+
+    public Entity(World world) {
+        this.world = world;
+    }
 }

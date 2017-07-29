@@ -5,9 +5,6 @@ import org.epoxide.ld39.tile.Tile;
 public class World {
 
     private Tile[][] tileMap;
-    private int worldWidth;
-    private int worldHeight;
-
 
     public Tile[][] getTileMap() {
         return tileMap;

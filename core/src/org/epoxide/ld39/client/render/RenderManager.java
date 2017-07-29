@@ -1,9 +1,10 @@
-package org.epoxide.ld39.client;
+package org.epoxide.ld39.client.render;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import org.epoxide.ld39.LD39;
+import org.epoxide.ld39.client.render.lighting.LightMap;
 import org.epoxide.ld39.entity.EntityPlayer;
 import org.epoxide.ld39.tile.Tile;
 import org.epoxide.ld39.world.World;
@@ -54,9 +55,9 @@ public class RenderManager {
         for (int i = 0; i < world.getTileMap().length; i++) {
             for (int j = 0; j < world.getTileMap()[i].length; j++) {
                 Tile t = world.getTileMap()[i][j];
-                if (t != Tile.VOID) {
+//                if (t != Tile.VOID) {
                     batch.draw(TILE_TEXTURE, (i * LD39.tileWidth) - x, (j * LD39.tileWidth) - y, LD39.tileWidth, LD39.tileWidth, t.u2, t.v2, t.u, t.v);
-                }
+//                }
             }
         }
         batch.end();

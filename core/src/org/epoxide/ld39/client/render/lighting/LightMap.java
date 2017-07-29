@@ -1,4 +1,4 @@
-package org.epoxide.ld39.render.lighting;
+package org.epoxide.ld39.client.render.lighting;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
@@ -52,9 +52,9 @@ public class LightMap {
     	batch.setColor(0.9f, 0.4f, 0f, 1f);
     	
     	// The position of the light on screen. 
-    	float lightX = (float)this.width / 2f;
-    	float lightY = (float)this.height /2f;
-    	
+    	float lightX = this.width / 2f;
+    	float lightY = this.height /2f;
+
     	// The strength of the light, based on how far away it is.
     	// Values are based on orangepixel.net's blog and should be messed with.
     	float strength = (128 / 100f) * 96;

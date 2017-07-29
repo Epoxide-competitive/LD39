@@ -6,9 +6,10 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.TimeUtils;
-import org.epoxide.ld39.client.RenderManager;
+import org.epoxide.ld39.client.render.RenderManager;
+import org.epoxide.ld39.client.render.lighting.LightMap;
 import org.epoxide.ld39.entity.EntityPlayer;
-import org.epoxide.ld39.render.lighting.LightMap;
+import org.epoxide.ld39.world.World;
 
 public class LD39 extends ApplicationAdapter {
 
@@ -25,16 +26,18 @@ public class LD39 extends ApplicationAdapter {
     private OrthographicCamera camera;
     private RenderManager renderManager;
     public EntityPlayer entityPlayer;
+    private World world;
     private LightMap lightMap;
 
     @Override
     public void create() {
         LD39.instance = this;
 
-        this.entityPlayer = new EntityPlayer(0, 0);
         this.batch = new SpriteBatch();
         this.camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         this.renderManager = new RenderManager();
+        this.world = new World();
+        this.entityPlayer = new EntityPlayer(this.world);
         this.lightMap = new LightMap();
         //this.lightMap.adjustSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
     }
@@ -57,11 +60,13 @@ public class LD39 extends ApplicationAdapter {
     }
 
     private void renderGame(float delta) {
-        Gdx.gl.glClearColor(1, 0, 0, 1);
+        Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         this.batch.setProjectionMatrix(this.camera.combined);
         this.lightMap.render(this.batch);
+
+//        this.renderManager.renderGame(batch, delta);
 
     }
 
@@ -71,7 +76,7 @@ public class LD39 extends ApplicationAdapter {
 
     @Override
     public void resize(int width, int height) {
-
+        this.camera.setToOrtho(false, width, height);
     	this.lightMap.adjustSize(width, height);
     }
 
