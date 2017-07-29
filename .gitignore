@@ -101,3 +101,8 @@ www-test/
 .gradle/
 build/
 war/
+
+#Eclipse
+*.project
+*.classpath
+*.prefs
