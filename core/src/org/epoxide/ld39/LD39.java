@@ -12,7 +12,7 @@ import com.badlogic.gdx.utils.TimeUtils;
 import org.epoxide.ld39.client.render.RenderManager;
 import org.epoxide.ld39.client.render.lighting.LightMap;
 import org.epoxide.ld39.entity.EntityPlayer;
-import org.epoxide.ld39.world.World;
+import org.epoxide.ld39.world.*;
 
 public class LD39 extends ApplicationAdapter {
 
@@ -56,10 +56,10 @@ public class LD39 extends ApplicationAdapter {
         this.lightShader.end();
 
         this.renderManager = new RenderManager();
-        this.world = new World(100, 100);
+        int[][] map = new MapHandler(100,100).map;
+        this.world = new World(map);
         this.entityPlayer = new EntityPlayer(this.world);
         this.lightMap = new LightMap();
-        //this.lightMap.adjustSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
     }
 
     @Override
