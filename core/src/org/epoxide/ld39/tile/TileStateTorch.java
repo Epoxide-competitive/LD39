@@ -14,6 +14,6 @@ public class TileStateTorch extends TileDirectionState {
     @Override
     public void renderTile(SpriteBatch batch, float renderX, float renderY, float tileWidth) {
         super.renderTile(batch, renderX, renderY, tileWidth);
-        LD39.instance.lightMap.addLight(renderX + tileWidth / 2, renderY + tileWidth / 2, 15, new Color(0xbb5510FF));
+        LD39.instance.lightMap.addLight(renderX + tileWidth / 2, renderY + tileWidth / 2, (float) (15-Math.random()*2), new Color(0xbb5510FF));
     }
 }
