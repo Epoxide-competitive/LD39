@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.TimeUtils;
 import org.epoxide.ld39.client.render.RenderManager;
 import org.epoxide.ld39.client.render.lighting.LightMap;
@@ -80,6 +81,8 @@ public class LD39 extends ApplicationAdapter {
     }
 
     private void renderGame(float delta) {
+    	
+    	this.lightMap.addLight(Gdx.input.getX(), Gdx.graphics.getHeight() - Gdx.input.getY(), 64, Color.WHITE);
         Gdx.gl.glClearColor(0, 0, 0, 0);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
