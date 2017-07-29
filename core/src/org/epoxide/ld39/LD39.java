@@ -6,10 +6,16 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.TimeUtils;
+import org.epoxide.ld39.client.RenderManager;
+import org.epoxide.ld39.entity.EntityPlayer;
 
 public class LD39 extends ApplicationAdapter {
 
-    public static LD39 INSTANCE;
+    public static final float tileWidth = 32f;
+    public static final String ID = "ld39";
+
+    public static LD39 instance;
+
     private double STEP = 1d / 120d;
     private double prevTime;
     private double accumulator = 0;
@@ -17,11 +23,13 @@ public class LD39 extends ApplicationAdapter {
     private SpriteBatch batch;
     private OrthographicCamera camera;
     private RenderManager renderManager;
+    public EntityPlayer entityPlayer;
 
     @Override
     public void create() {
-        LD39.INSTANCE = this;
+        LD39.instance = this;
 
+        this.entityPlayer = new EntityPlayer(0, 0);
         this.batch = new SpriteBatch();
         this.camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         this.renderManager = new RenderManager();
@@ -53,6 +61,11 @@ public class LD39 extends ApplicationAdapter {
     }
 
     private void updateGame(float delta) {
+
+    }
+
+    @Override
+    public void resize(int width, int height) {
 
     }
 
