@@ -1,10 +1,7 @@
 package org.epoxide.ld39;
 
-import com.badlogic.gdx.ApplicationAdapter;
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.*;
+import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
@@ -42,7 +39,6 @@ public class LD39 extends ApplicationAdapter {
     @Override
     public void create() {
         LD39.instance = this;
-
         this.batch = new SpriteBatch();
         this.font = new BitmapFont();
         this.camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
@@ -81,11 +77,10 @@ public class LD39 extends ApplicationAdapter {
     }
 
     private void renderGame(float delta) {
-    	
-    	this.lightMap.addLight(Gdx.input.getX(), Gdx.graphics.getHeight() - Gdx.input.getY(), 64, Color.WHITE);
+        this.lightMap.addLight(camera.position.x - Gdx.graphics.getWidth()/2+Gdx.input.getX(), camera.position.y+Gdx.graphics.getHeight()/2 - Gdx.input.getY(), 64, Color.WHITE);
         Gdx.gl.glClearColor(0, 0, 0, 0);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
+        camera.update();
         this.batch.setProjectionMatrix(this.camera.combined);
         this.batch.setShader(this.defaultShader);
         this.lightMap.render(this.batch, delta);
@@ -98,26 +93,64 @@ public class LD39 extends ApplicationAdapter {
         this.renderManager.renderGame(batch, delta);
 
         if (DEBUG) {
-
             this.batch.begin();
             this.batch.setShader(this.defaultShader);
-            this.font.draw(this.batch, "FPS: " + Gdx.graphics.getFramesPerSecond(), 10, Gdx.graphics.getHeight() - 10);
-            this.font.draw(this.batch, "GL_RENDERER = " + Gdx.gl.glGetString(GL20.GL_RENDERER), 10, Gdx.graphics.getHeight() - 30);
-            this.font.draw(this.batch, "GL_VENDOR = " + Gdx.gl.glGetString(GL20.GL_VENDOR), 10, Gdx.graphics.getHeight() - 50);
-            this.font.draw(this.batch, "GL_VERSION = " + Gdx.gl.glGetString(GL20.GL_VERSION), 10, Gdx.graphics.getHeight() - 70);
-            this.font.draw(this.batch, "WIDTH = " + Gdx.graphics.getWidth(), 10, Gdx.graphics.getHeight() - 90);
-            this.font.draw(this.batch, "HEIGHT = " + Gdx.graphics.getHeight(), 10, Gdx.graphics.getHeight() - 110);
+            float textX = camera.position.x - Gdx.graphics.getWidth()/2+10;
+            float textY = camera.position.y+Gdx.graphics.getHeight()/2;
+            this.font.draw(this.batch, "FPS: " + Gdx.graphics.getFramesPerSecond(), textX, textY - 10);
+            this.font.draw(this.batch, "GL_RENDERER = " + Gdx.gl.glGetString(GL20.GL_RENDERER), textX, textY - 30);
+            this.font.draw(this.batch, "GL_VENDOR = " + Gdx.gl.glGetString(GL20.GL_VENDOR), textX, textY - 50);
+            this.font.draw(this.batch, "GL_VERSION = " + Gdx.gl.glGetString(GL20.GL_VERSION), textX, textY - 70);
+            this.font.draw(this.batch, "WIDTH = " + Gdx.graphics.getWidth(), textX, textY - 90);
+            this.font.draw(this.batch, "HEIGHT = " + Gdx.graphics.getHeight(), textX, textY - 110);
+            this.font.draw(this.batch, "CAM = " + camera.position, textX, textY - 130);
+    
             this.batch.end();
         }
     }
-
+    private int movementDelay = 20;
     private void updateGame(float delta) {
-
+        if(movementDelay>0){
+            movementDelay--;
+        }else {
+    
+            float movementX = 0;
+            float movementY = 0;
+            if(Gdx.input.isKeyPressed(Input.Keys.W)) {
+                movementY += 32;
+            }
+            if(Gdx.input.isKeyPressed(Input.Keys.S)) {
+                movementY -= 32;
+            }
+            if(Gdx.input.isKeyPressed(Input.Keys.A)) {
+                movementX -= 32;
+            }
+            if(Gdx.input.isKeyPressed(Input.Keys.D)) {
+                movementX += 32;
+            }
+            if(movementX != 0 || movementY != 0) {
+                if(camera.position.x + movementX - Gdx.graphics.getWidth() / 2 > 0) {
+                    camera.translate(movementX, 0);
+                } else {
+                    camera.position.x = Gdx.graphics.getWidth() / 2;
+                }
+                if(camera.position.y + movementY - Gdx.graphics.getHeight() / 2 > 0) {
+                    camera.translate(0, movementY);
+                } else {
+                    camera.position.y = Gdx.graphics.getHeight() / 2;
+                }
+                camera.update();
+                movementDelay = 20;
+            }
+        }
+    
     }
 
     @Override
     public void resize(int width, int height) {
         this.camera.setToOrtho(false, width, height);
+        camera.update();
+        
         this.lightMap.adjustSize(width, height);
 
         this.lightShader.begin();
