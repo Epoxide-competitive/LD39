@@ -37,12 +37,12 @@ public class LightMap {
     	
     	lightBuffer.begin();
     	
-    	Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE);
-    	Gdx.gl.glEnable(GL20.GL_BLEND);
-    	
     	//Sets the ambient color
     	Gdx.gl.glClearColor(0.3f, 0.38f,  0.4f, 1);
     	Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+    	 	
+    	batch.setBlendFunction(GL20.GL_SRC_ALPHA, GL20.GL_ONE);
+    	batch.enableBlending();
     	
     	batch.begin();    	
     	
@@ -57,7 +57,7 @@ public class LightMap {
 
     	// The strength of the light, based on how far away it is.
     	// Values are based on orangepixel.net's blog and should be messed with.
-    	float strength = (128 / 100f) * 96;
+    	float strength = (128 / 100f) * 1024;
     	
     	lightX -= strength/2;
     	lightY -= strength/2;
@@ -66,7 +66,7 @@ public class LightMap {
     	batch.end();
     	lightBuffer.end();
     	
-    	Gdx.gl.glBlendFunc(GL20.GL_DST_COLOR, GL20.GL_ZERO);
+    	batch.setBlendFunction(GL20.GL_DST_COLOR, GL20.GL_ZERO);
     	batch.begin();
     	batch.draw(this.lightBufferRegion, 0f, 0f, this.width, this.height);
     	batch.end();
