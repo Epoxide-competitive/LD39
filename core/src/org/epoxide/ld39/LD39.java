@@ -12,7 +12,7 @@ import com.badlogic.gdx.utils.TimeUtils;
 import org.epoxide.ld39.client.render.RenderManager;
 import org.epoxide.ld39.client.render.lighting.LightMap;
 import org.epoxide.ld39.entity.EntityPlayer;
-import org.epoxide.ld39.world.World;
+import org.epoxide.ld39.world.*;
 
 public class LD39 extends ApplicationAdapter {
 
@@ -56,10 +56,10 @@ public class LD39 extends ApplicationAdapter {
         this.lightShader.end();
 
         this.renderManager = new RenderManager();
-        this.world = new World(100, 100);
+        int[][] map = new MapHandler(100,100).map;
+        this.world = new World(map);
         this.entityPlayer = new EntityPlayer(this.world);
         this.lightMap = new LightMap();
-        //this.lightMap.adjustSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
     }
 
     @Override
@@ -102,7 +102,8 @@ public class LD39 extends ApplicationAdapter {
             this.font.draw(this.batch, "GL_RENDERER = " + Gdx.gl.glGetString(GL20.GL_RENDERER), 10, Gdx.graphics.getHeight() - 30);
             this.font.draw(this.batch, "GL_VENDOR = " + Gdx.gl.glGetString(GL20.GL_VENDOR), 10, Gdx.graphics.getHeight() - 50);
             this.font.draw(this.batch, "GL_VERSION = " + Gdx.gl.glGetString(GL20.GL_VERSION), 10, Gdx.graphics.getHeight() - 70);
-
+            this.font.draw(this.batch, "WIDTH = " + Gdx.graphics.getWidth(), 10, Gdx.graphics.getHeight() - 90);
+            this.font.draw(this.batch, "HEIGHT = " + Gdx.graphics.getHeight(), 10, Gdx.graphics.getHeight() - 110);
             this.batch.end();
         }
     }
