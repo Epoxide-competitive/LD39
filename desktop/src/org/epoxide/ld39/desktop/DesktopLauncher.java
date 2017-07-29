@@ -8,7 +8,8 @@ public class DesktopLauncher {
     public static void main(String[] arg) {
         LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
         config.vSyncEnabled = false;
-        config.foregroundFPS = -1;
+        config.foregroundFPS = 0;
+        config.backgroundFPS = 0;
         new LwjglApplication(new LD39(), config);
     }
 }

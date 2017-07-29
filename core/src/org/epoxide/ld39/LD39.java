@@ -2,9 +2,12 @@ package org.epoxide.ld39;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.utils.TimeUtils;
 import org.epoxide.ld39.client.render.RenderManager;
 import org.epoxide.ld39.client.render.lighting.LightMap;
@@ -15,6 +18,7 @@ public class LD39 extends ApplicationAdapter {
 
     public static final float tileWidth = 32f;
     public static final String ID = "ld39";
+    private static final boolean DEBUG = true;
 
     public static LD39 instance;
 
@@ -23,20 +27,36 @@ public class LD39 extends ApplicationAdapter {
     private double accumulator = 0;
 
     private SpriteBatch batch;
+    private BitmapFont font;
+
     private OrthographicCamera camera;
     private RenderManager renderManager;
     public EntityPlayer entityPlayer;
     private World world;
-    private LightMap lightMap;
+    public LightMap lightMap;
+
+    private ShaderProgram defaultShader;
+    private ShaderProgram lightShader;
 
     @Override
     public void create() {
         LD39.instance = this;
 
         this.batch = new SpriteBatch();
+        this.font = new BitmapFont();
         this.camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        this.camera.setToOrtho(true, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+
+        this.defaultShader = new ShaderProgram(Gdx.files.internal("assets/ld39/shaders/main.vert"), Gdx.files.internal("assets/ld39/shaders/main.frag"));
+
+        this.lightShader = new ShaderProgram(Gdx.files.internal("assets/ld39/shaders/main.vert"), Gdx.files.internal("assets/ld39/shaders/light.frag"));
+        this.lightShader.begin();
+        this.lightShader.setUniformf("ambientColor", 0.3f, 0.38f, 0.4f, 0.25f);
+        this.lightShader.setUniformi("u_lightmap", 1);
+        this.lightShader.end();
+
         this.renderManager = new RenderManager();
-        this.world = new World();
+        this.world = new World(100, 100);
         this.entityPlayer = new EntityPlayer(this.world);
         this.lightMap = new LightMap();
         //this.lightMap.adjustSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
@@ -60,14 +80,31 @@ public class LD39 extends ApplicationAdapter {
     }
 
     private void renderGame(float delta) {
-        Gdx.gl.glClearColor(1, 1, 1, 1);
+        Gdx.gl.glClearColor(0, 0, 0, 0);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         this.batch.setProjectionMatrix(this.camera.combined);
+        this.batch.setShader(this.defaultShader);
         this.lightMap.render(this.batch, delta);
 
-//        this.renderManager.renderGame(batch, delta);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        this.batch.setColor(Color.WHITE);
+        this.batch.setProjectionMatrix(this.camera.combined);
+        this.batch.setShader(this.lightShader);
+        this.lightMap.resetBinds();
+        this.renderManager.renderGame(batch, delta);
 
+        if (DEBUG) {
+
+            this.batch.begin();
+            this.batch.setShader(this.defaultShader);
+            this.font.draw(this.batch, "FPS: " + Gdx.graphics.getFramesPerSecond(), 10, Gdx.graphics.getHeight() - 10);
+            this.font.draw(this.batch, "GL_RENDERER = " + Gdx.gl.glGetString(GL20.GL_RENDERER), 10, Gdx.graphics.getHeight() - 30);
+            this.font.draw(this.batch, "GL_VENDOR = " + Gdx.gl.glGetString(GL20.GL_VENDOR), 10, Gdx.graphics.getHeight() - 50);
+            this.font.draw(this.batch, "GL_VERSION = " + Gdx.gl.glGetString(GL20.GL_VERSION), 10, Gdx.graphics.getHeight() - 70);
+
+            this.batch.end();
+        }
     }
 
     private void updateGame(float delta) {
@@ -77,7 +114,11 @@ public class LD39 extends ApplicationAdapter {
     @Override
     public void resize(int width, int height) {
         this.camera.setToOrtho(false, width, height);
-    	this.lightMap.adjustSize(width, height);
+        this.lightMap.adjustSize(width, height);
+
+        this.lightShader.begin();
+        this.lightShader.setUniformf("resolution", Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        this.lightShader.end();
     }
 
     @Override

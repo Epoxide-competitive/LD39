@@ -4,25 +4,18 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import org.epoxide.ld39.LD39;
-import org.epoxide.ld39.client.render.lighting.LightMap;
 import org.epoxide.ld39.entity.EntityPlayer;
-import org.epoxide.ld39.tile.Tile;
+import org.epoxide.ld39.tile.TileState;
 import org.epoxide.ld39.world.World;
 
 public class RenderManager {
-    private final Texture TILE_TEXTURE;
-
-    public RenderManager() {
-        this.TILE_TEXTURE = new Texture("assets/ld39/textures/tile/tiles.png");
-    }
+    public static final Texture TILE_TEXTURE = new Texture("assets/ld39/textures/tile/tiles.png");
 
     public void renderGame(SpriteBatch batch, float delta) {
-        for (TileLayer tileLayer : TileLayer.values()) {
-            if (tileLayer == TileLayer.LAYER_ENTITY)
-                this.renderEntities(batch, delta);
-            else
-                this.renderTiles(batch, delta, tileLayer);
-        }
+        this.renderTiles(batch, delta, TileLayer.LAYER_TILE_BACKGROUND);
+        this.renderEntities(batch, delta);
+        //TODO render player
+        this.renderTiles(batch, delta, TileLayer.LAYER_TILE_FOREGROUND);
     }
 
     private void renderEntities(SpriteBatch batch, float delta) {
@@ -48,26 +41,23 @@ public class RenderManager {
         }
 
         batch.begin();
-        batch.setColor(1.0f, 1.0f, 1.0f, 1.0f);
-        if (layer == TileLayer.LAYER_BACKGROUND) {
-            batch.setColor(0.5f, 0.5f, 0.5f, 1.0f);
-        }
-        for (int i = 0; i < world.getTileMap().length; i++) {
-            for (int j = 0; j < world.getTileMap()[i].length; j++) {
-                Tile t = world.getTileMap()[i][j];
-//                if (t != Tile.VOID) {
-                    batch.draw(TILE_TEXTURE, (i * LD39.tileWidth) - x, (j * LD39.tileWidth) - y, LD39.tileWidth, LD39.tileWidth, t.u2, t.v2, t.u, t.v);
-//                }
+        for (int i = 0; i < world.getMapWidth(); i++) {
+            for (int j = 0; j < world.getMapHeight(); j++) {
+                TileState tileState = world.getTileState(i, j);
+//                if (t != Tile.VOID)
+                {
+                    float renderX = (i * LD39.tileWidth) - x;
+                    float renderY = (j * LD39.tileWidth) - y;
+                    if (renderX >= 0 && renderX <= Gdx.graphics.getWidth() && renderY >= 0 && renderY <= Gdx.graphics.getHeight())
+                        if (tileState.shouldRenderLayer(layer)) {
+                            tileState.renderTile(batch, renderX, renderY, LD39.tileWidth);
+//                            Tile tile = tileState.getTile();
+                        }
+                }
             }
         }
         batch.end();
     }
 
-    private enum TileLayer {
-        LAYER_BACKGROUND,
-        LAYER_FOREGROUND,
-        LAYER_ENTITY,
-        LAYER_PARTICLES,
-        LAYER_GUI
-    }
+
 }

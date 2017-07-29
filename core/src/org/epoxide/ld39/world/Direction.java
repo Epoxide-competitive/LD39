@@ -1,6 +1,6 @@
-package org.epoxide.ld39.entity;
+package org.epoxide.ld39.world;
 
-public enum EnumRotation {
+public enum Direction {
 
     NORTH,
     NORTH_EAST,
