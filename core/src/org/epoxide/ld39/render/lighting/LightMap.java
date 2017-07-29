@@ -27,7 +27,7 @@ public class LightMap {
     		this.lightBuffer.dispose();
     	}
     	
-    	lightBuffer = new FrameBuffer(Format.RGBA8888, (int) Math.pow(this.height, 2), (int) Math.pow(this.width, 2), false);
+    	lightBuffer = new FrameBuffer(Format.RGBA8888, (int)this.height, (int)this.width, false);
     	lightBuffer.getColorBufferTexture().setFilter(TextureFilter.Nearest, TextureFilter.Nearest);    	
     	lightBufferRegion = new TextureRegion(lightBuffer.getColorBufferTexture(), 0, (int) (lightBuffer.getHeight() - this.width), (int) this.height, (int) this.width);
     	lightBufferRegion.flip(false, false);
