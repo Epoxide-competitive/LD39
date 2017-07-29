@@ -19,8 +19,10 @@ public class MapHandler {
         //Any more and a lot of walls are generated
         percentAreWalls = 40;
         
-        randomFillMap();
-        makeCaverns();
+        for(int i =0;i<2;i++) {
+            randomFillMap();
+            makeCaverns();
+        }
     }
     
     public void makeCaverns() {
