@@ -36,7 +36,7 @@ public class LD39 extends ApplicationAdapter {
         this.camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         this.renderManager = new RenderManager();
         this.lightMap = new LightMap();
-        this.lightMap.adjustSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        //this.lightMap.adjustSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
     }
 
     @Override
