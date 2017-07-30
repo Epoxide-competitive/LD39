@@ -4,15 +4,21 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import org.epoxide.ld39.LD39;
+import org.epoxide.ld39.client.render.hud.HudDebugInfo;
+import org.epoxide.ld39.client.render.hud.HudHealth;
+import org.epoxide.ld39.client.render.hud.IHud;
 import org.epoxide.ld39.entity.EntityPlayer;
 import org.epoxide.ld39.tile.Tile;
 import org.epoxide.ld39.tile.TileState;
 import org.epoxide.ld39.world.World;
 
 public class RenderManager {
-    public static final Texture TILE_TEXTURE = new Texture("assets/ld39/textures/tile/tiles.png");
-    public static final Texture HUD_BATTERY_TEXTURE = new Texture("assets/ld39/textures/hud/battery.png");
+	
+    public static final Texture TILE_TEXTURE = new Texture("assets/ld39/textures/tile/tiles.png");  
     
+    //TODO move huds to a registry. Probably not in this class.
+    private IHud debugHud = new HudDebugInfo();
+    private IHud healthHud = new HudHealth();
     
     public void renderGame(SpriteBatch batch, float delta) {
         this.renderTiles(batch, delta, TileLayer.LAYER_TILE_BACKGROUND);
@@ -24,18 +30,19 @@ public class RenderManager {
     }
     
     private void renderHud(SpriteBatch batch, float delta){
-        batch.begin();
-        batch.setShader(LD39.instance.defaultShader);
-        batch.draw(HUD_BATTERY_TEXTURE, Gdx.graphics.getWidth() - 29, Gdx.graphics.getHeight() - 30, 16, LD39.instance.entityPlayer.power/LD39.instance.entityPlayer.maxPower*24, 0.8f, 1, 0, 0.6f);
-        batch.draw(HUD_BATTERY_TEXTURE, Gdx.graphics.getWidth() - 32, Gdx.graphics.getHeight() - 32, 20, 30, 1, 0.55f, 0, 0);
-        
-        batch.end();
+    	
+    	if (LD39.instance.isDebugEnabled()) {
+    		
+    		debugHud.renderHud(batch, delta);
+    	}
+    	
+    	healthHud.renderHud(batch, delta);
     }
 
     private void renderPlayer(SpriteBatch batch, float delta) {
         batch.begin();
         batch.draw(TILE_TEXTURE, Gdx.graphics.getWidth() / 2 - LD39.tileWidth / 2, Gdx.graphics.getHeight() / 2 - LD39.tileWidth / 2, LD39.tileWidth, LD39.tileWidth, 0, 0, 1, 1);
-        LD39.instance.lightMap.addLight(Gdx.graphics.getWidth() / 2 - LD39.tileWidth / 2+16, Gdx.graphics.getHeight() / 2 - LD39.tileWidth / 2+16, 25, Color.WHITE);
+        LD39.instance.getLightMap().addLight(Gdx.graphics.getWidth() / 2 - LD39.tileWidth / 2+16, Gdx.graphics.getHeight() / 2 - LD39.tileWidth / 2+16, 25, Color.WHITE);
         batch.end();
     }
 
@@ -43,7 +50,7 @@ public class RenderManager {
     }
 
     private void renderTiles(SpriteBatch batch, float delta, TileLayer layer) {
-        final EntityPlayer entityPlayer = LD39.instance.entityPlayer;
+        final EntityPlayer entityPlayer = LD39.instance.getEntityPlayer();
         final World world = entityPlayer.world;
 
         int x = (int) (entityPlayer.x * LD39.tileWidth - Gdx.graphics.getWidth() / 2 + LD39.tileWidth / 2);
