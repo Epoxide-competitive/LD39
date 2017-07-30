@@ -3,6 +3,9 @@ package org.epoxide.ld39;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.controllers.Controller;
+import com.badlogic.gdx.controllers.Controllers;
+import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -38,31 +41,25 @@ public class LD39 extends ApplicationAdapter {
     public LightMap lightMap;
 
     public ShaderProgram defaultShader;
-    private ShaderProgram lightShader;
     
     private GameState state;
 
     @Override
     public void create() {
+        
         LD39.instance = this;
         this.batch = new SpriteBatch();
         this.font = new BitmapFont();
         this.camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         this.camera.setToOrtho(true, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-
+        this.lightMap = new LightMap();
+        
         this.defaultShader = new ShaderProgram(Gdx.files.internal("assets/ld39/shaders/main.vert"), Gdx.files.internal("assets/ld39/shaders/main.frag"));
-
-        this.lightShader = new ShaderProgram(Gdx.files.internal("assets/ld39/shaders/main.vert"), Gdx.files.internal("assets/ld39/shaders/light.frag"));
-        this.lightShader.begin();
-        this.lightShader.setUniformf("ambientColor", 0.3f, 0.38f, 0.4f, 0.25f);
-        this.lightShader.setUniformi("u_lightmap", 1);
-        this.lightShader.end();
 
         this.renderManager = new RenderManager();
         int[][] map = new MapHandler(100, 100).map;
         this.world = new World(map);
         this.entityPlayer = new EntityPlayer(this.world);
-        this.lightMap = new LightMap();
         state = GameState.RUNNING;
         
         Pixmap pm = new Pixmap(Gdx.files.internal("assets/ld39/textures/misc/cursor_64.png"));
@@ -95,12 +92,6 @@ public class LD39 extends ApplicationAdapter {
         this.batch.setProjectionMatrix(this.camera.combined);
         this.batch.setShader(this.defaultShader);
         this.lightMap.render(this.batch, delta);
-
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        this.batch.setColor(Color.WHITE);
-        this.batch.setProjectionMatrix(this.camera.combined);
-        this.batch.setShader(this.lightShader);
-        this.lightMap.resetBinds();
         this.renderManager.renderGame(batch, delta);
 
         if (DEBUG) {
@@ -197,17 +188,19 @@ public class LD39 extends ApplicationAdapter {
 
     @Override
     public void resize(int width, int height) {
+    	
         this.camera.setToOrtho(false, width, height);
         camera.update();
 
         this.lightMap.adjustSize(width, height);
-
-        this.lightShader.begin();
-        this.lightShader.setUniformf("resolution", Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        this.lightShader.end();
     }
 
     @Override
     public void dispose() {
+    }
+    
+    public Camera getCamera() {
+    	
+    	return this.camera;
     }
 }
