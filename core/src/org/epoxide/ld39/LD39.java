@@ -39,6 +39,8 @@ public class LD39 extends ApplicationAdapter {
 
     public ShaderProgram defaultShader;
     private ShaderProgram lightShader;
+    
+    private GameState state;
 
     @Override
     public void create() {
@@ -61,6 +63,7 @@ public class LD39 extends ApplicationAdapter {
         this.world = new World(map);
         this.entityPlayer = new EntityPlayer(this.world);
         this.lightMap = new LightMap();
+        state = GameState.RUNNING;
     }
 
     @Override
@@ -71,10 +74,15 @@ public class LD39 extends ApplicationAdapter {
 
         prevTime = currentTime;
         accumulator += frameTime;
-
-        while (accumulator >= STEP) {
-            accumulator -= STEP;
-            updateGame(delta);
+        if(state == GameState.RUNNING) {
+            while(accumulator >= STEP) {
+                accumulator -= STEP;
+                updateGame(delta);
+            }
+        }else{
+            if(Gdx.input.isKeyPressed(Input.Keys.ESCAPE)){
+                state = GameState.RUNNING;
+            }
         }
 
         renderGame(delta);
@@ -108,6 +116,8 @@ public class LD39 extends ApplicationAdapter {
             this.font.draw(this.batch, "HEIGHT = " + Gdx.graphics.getHeight(), textX, textY - 110);
             this.font.draw(this.batch, "X = " + entityPlayer.x, textX, textY - 130);
             this.font.draw(this.batch, "Y = " + entityPlayer.y, textX, textY - 150);
+            this.font.draw(this.batch, "GAMESTATE = " + state, textX, textY - 170);
+    
             this.batch.end();
         }
     }
@@ -115,6 +125,7 @@ public class LD39 extends ApplicationAdapter {
     
     private final int movementDelayDefault = 10;
     private int movementDelay = movementDelayDefault;
+    
     private void updateGame(float delta) {
         if (movementDelay > 0) {
             movementDelay--;
@@ -168,6 +179,9 @@ public class LD39 extends ApplicationAdapter {
                 }
                 movementDelay = movementDelayDefault;
             }
+        }
+        if(Gdx.input.isKeyPressed(Input.Keys.E)){
+            this.state = GameState.PAUSED;
         }
 
     }
