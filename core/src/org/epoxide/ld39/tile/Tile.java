@@ -11,11 +11,12 @@ public class Tile extends Registerable<Tile> {
 
     public static final Tile VOID = registerTile("void", new Tile());
     public static final Tile WALL = registerTile("wall", new Tile()).setUV(0, 0, 0.0625f, 0.0625f);
-    public static final Tile FLOOR = registerTile("floor", new Tile()).setUV(0.0625f, 0, 0.125f, 0.0625f);
-    public static final Tile TORCH = registerTile("torch", new TileVisual()).setUV(0.25f, 0, 0.3125f, 0.0625f);
+    public static final Tile FLOOR = registerTile("floor", new Tile()).setUV(0.0625f, 0, 0.125f, 0.0625f).setCollidable(true);
+    public static final Tile TORCH = registerTile("torch", new TileVisual()).setUV(0.25f, 0, 0.3125f, 0.0625f).setCollidable(true);
 
     public float u, v, u2, v2;
-
+    private boolean collidable = false;
+    
     public static Tile registerTile(String id, Tile tile) {
         tile.setIdentifier(new Identifier(LD39.ID, id));
         REGISTRY.registerValue(tile);
@@ -33,5 +34,14 @@ public class Tile extends Registerable<Tile> {
 
     public boolean shouldRenderLayer(TileLayer layer) {
         return layer == TileLayer.LAYER_TILE_BACKGROUND;
+    }
+    
+    public boolean isCollidable() {
+        return collidable;
+    }
+    
+    public Tile setCollidable(boolean collidable) {
+        this.collidable = collidable;
+        return this;
     }
 }
