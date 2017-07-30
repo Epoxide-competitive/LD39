@@ -15,9 +15,9 @@ public class RenderManager {
     public void renderGame(SpriteBatch batch, float delta) {
         this.renderTiles(batch, delta, TileLayer.LAYER_TILE_BACKGROUND);
         this.renderEntities(batch, delta);
-        //TODO render player
-        this.renderPlayer(batch, delta);
         this.renderTiles(batch, delta, TileLayer.LAYER_TILE_FOREGROUND);
+        this.renderPlayer(batch, delta);
+        
     }
 
     private void renderPlayer(SpriteBatch batch, float delta) {
