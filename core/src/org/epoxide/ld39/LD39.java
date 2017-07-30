@@ -37,7 +37,7 @@ public class LD39 extends ApplicationAdapter {
     private World world;
     public LightMap lightMap;
 
-    private ShaderProgram defaultShader;
+    public ShaderProgram defaultShader;
     private ShaderProgram lightShader;
 
     @Override
@@ -81,7 +81,6 @@ public class LD39 extends ApplicationAdapter {
     }
 
     private void renderGame(float delta) {
-        this.lightMap.addLight(camera.position.x - Gdx.graphics.getWidth() / 2 + Gdx.input.getX(), camera.position.y + Gdx.graphics.getHeight() / 2 - Gdx.input.getY(), 150, Color.WHITE);
         Gdx.gl.glClearColor(0, 0, 0, 0);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         camera.update();
@@ -113,47 +112,61 @@ public class LD39 extends ApplicationAdapter {
         }
     }
 
-    private int movementDelay = 20;
-
+    
+    private final int movementDelayDefault = 10;
+    private int movementDelay = movementDelayDefault;
     private void updateGame(float delta) {
         if (movementDelay > 0) {
             movementDelay--;
         } else {
             boolean moved = false;
+            float prevX = entityPlayer.x, prevY = entityPlayer.y;
             if (Gdx.input.isKeyPressed(Input.Keys.W)) {
-                if(entityPlayer.y+1 > world.getMapHeight()-1){
-                    entityPlayer.y = world.getMapHeight()-1;
-                }else{
-                    entityPlayer.y++;
+                if(world.getTileState((int)entityPlayer.x, (int)entityPlayer.y+1).tile.isCollidable()) {
+                    if(entityPlayer.y + 1 > world.getMapHeight() - 1) {
+                        entityPlayer.y = world.getMapHeight() - 1;
+                    } else {
+                        entityPlayer.y++;
+                    }
+                    moved = true;
                 }
-                moved = true;
-            }
-            if (Gdx.input.isKeyPressed(Input.Keys.S)) {
-                if(entityPlayer.y-1 < 0){
-                    entityPlayer.y = 0;
-                }else{
-                    entityPlayer.y--;
+            }else if (Gdx.input.isKeyPressed(Input.Keys.S)) {
+                if(world.getTileState((int)entityPlayer.x, (int)entityPlayer.y-1).tile.isCollidable()) {
+                    if(entityPlayer.y - 1 < 0) {
+                        entityPlayer.y = 0;
+                    } else {
+                        entityPlayer.y--;
+                    }
+                    moved = true;
                 }
-                moved = true;
-            }
-            if (Gdx.input.isKeyPressed(Input.Keys.A)) {
-                if(entityPlayer.x-1 < 0){
-                    entityPlayer.x = 0;
-                }else{
-                    entityPlayer.x--;
+            }else if (Gdx.input.isKeyPressed(Input.Keys.A)) {
+                if(world.getTileState((int)entityPlayer.x-1, (int)entityPlayer.y).tile.isCollidable()) {
+                    if(entityPlayer.x - 1 < 0) {
+                        entityPlayer.x = 0;
+                    } else {
+                        entityPlayer.x--;
+                    }
+                    moved = true;
                 }
-                moved = true;
-            }
-            if (Gdx.input.isKeyPressed(Input.Keys.D)) {
-                if(entityPlayer.x+1 > world.getMapWidth()-1){
-                    entityPlayer.x = world.getMapWidth()-1;
-                }else{
-                    entityPlayer.x++;
+            }else if (Gdx.input.isKeyPressed(Input.Keys.D)) {
+                if(world.getTileState((int) entityPlayer.x + 1, (int) entityPlayer.y).tile.isCollidable()) {
+                    if(entityPlayer.x + 1 > world.getMapWidth() - 1) {
+                        entityPlayer.x = world.getMapWidth() - 1;
+                    } else {
+                        entityPlayer.x++;
+                    }
+                    moved = true;
                 }
-                moved = true;
             }
             if(moved){
-                movementDelay = 20;
+                if(entityPlayer.power>0){
+                    entityPlayer.power--;
+                }else{
+                    entityPlayer.power=0;
+                    entityPlayer.x = prevX;
+                    entityPlayer.y = prevY;
+                }
+                movementDelay = movementDelayDefault;
             }
         }
 
