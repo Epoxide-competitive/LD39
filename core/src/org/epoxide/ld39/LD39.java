@@ -6,6 +6,7 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
@@ -64,6 +65,9 @@ public class LD39 extends ApplicationAdapter {
         this.entityPlayer = new EntityPlayer(this.world);
         this.lightMap = new LightMap();
         state = GameState.RUNNING;
+        
+        Pixmap pm = new Pixmap(Gdx.files.internal("assets/ld39/textures/misc/cursor_64.png"));
+        Gdx.graphics.setCursor(Gdx.graphics.newCursor(pm, 0, 0));
     }
 
     @Override
