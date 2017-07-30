@@ -109,7 +109,6 @@ public class LD39 extends ApplicationAdapter {
             this.font.draw(this.batch, "HEIGHT = " + Gdx.graphics.getHeight(), textX, textY - 110);
             this.font.draw(this.batch, "X = " + entityPlayer.x, textX, textY - 130);
             this.font.draw(this.batch, "Y = " + entityPlayer.y, textX, textY - 150);
-            this.font.draw(this.batch, "CAM = " + camera.position, textX, textY - 170);
             this.batch.end();
         }
     }

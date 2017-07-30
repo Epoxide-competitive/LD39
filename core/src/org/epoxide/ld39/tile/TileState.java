@@ -23,7 +23,7 @@ public class TileState {
         return this.tile.shouldRenderLayer(layer);
     }
 
-    public void renderTile(SpriteBatch batch, float renderX, float renderY, float tileWidth) {
+    public void renderTile(SpriteBatch batch, float renderX, float renderY, float tileWidth, TileLayer layer) {
         batch.draw(RenderManager.TILE_TEXTURE, renderX, renderY, tileWidth, tileWidth, tile.u2, tile.v2, tile.u, tile.v);
     }
 }
