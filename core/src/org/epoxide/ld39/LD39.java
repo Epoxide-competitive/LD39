@@ -120,31 +120,40 @@ public class LD39 extends ApplicationAdapter {
         if (movementDelay > 0) {
             movementDelay--;
         } else {
-            float movementX = 0;
-            float movementY = 0;
+            boolean moved = false;
             if (Gdx.input.isKeyPressed(Input.Keys.W)) {
-                movementY += 1;
+                if(entityPlayer.y+1 > world.getMapHeight()-1){
+                    entityPlayer.y = world.getMapHeight()-1;
+                }else{
+                    entityPlayer.y++;
+                }
+                moved = true;
             }
             if (Gdx.input.isKeyPressed(Input.Keys.S)) {
-                movementY -= 1;
+                if(entityPlayer.y-1 < 0){
+                    entityPlayer.y = 0;
+                }else{
+                    entityPlayer.y--;
+                }
+                moved = true;
             }
             if (Gdx.input.isKeyPressed(Input.Keys.A)) {
-                movementX -= 1;
+                if(entityPlayer.x-1 < 0){
+                    entityPlayer.x = 0;
+                }else{
+                    entityPlayer.x--;
+                }
+                moved = true;
             }
             if (Gdx.input.isKeyPressed(Input.Keys.D)) {
-                movementX += 1;
+                if(entityPlayer.x+1 > world.getMapWidth()-1){
+                    entityPlayer.x = world.getMapWidth()-1;
+                }else{
+                    entityPlayer.x++;
+                }
+                moved = true;
             }
-            if (movementX != 0 || movementY != 0) {
-                if (entityPlayer.x + movementX > 0) {
-                    entityPlayer.x += movementX;
-                } else {
-                    entityPlayer.x = 0;
-                }
-                if (entityPlayer.y + movementY > 0) {
-                    entityPlayer.y += movementY;
-                } else {
-                    entityPlayer.y = 0;
-                }
+            if(moved){
                 movementDelay = 20;
             }
         }
