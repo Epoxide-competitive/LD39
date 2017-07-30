@@ -20,7 +20,7 @@ public class LD39 extends ApplicationAdapter {
 
     public static final float tileWidth = 32f;
     public static final String ID = "ld39";
-    private static final boolean DEBUG = true;
+    private static boolean DEBUG = true;
 
     public static LD39 instance;
 
@@ -80,7 +80,7 @@ public class LD39 extends ApplicationAdapter {
                 updateGame(delta);
             }
         }else{
-            if(Gdx.input.isKeyPressed(Input.Keys.ESCAPE)){
+            if(Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)){
                 state = GameState.RUNNING;
             }
         }
@@ -127,6 +127,9 @@ public class LD39 extends ApplicationAdapter {
     private int movementDelay = movementDelayDefault;
     
     private void updateGame(float delta) {
+        if(Gdx.input.isKeyPressed(Input.Keys.B)){
+            DEBUG = !DEBUG;
+        }
         if (movementDelay > 0) {
             movementDelay--;
         } else {
