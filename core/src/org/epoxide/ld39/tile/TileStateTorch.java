@@ -28,7 +28,7 @@ public class TileStateTorch extends TileDirectionState {
 
         if (layer == TileLayer.LAYER_TILE_FOREGROUND) {
             super.renderTile(batch, renderX, renderY, tileWidth, layer);
-            LD39.instance.lightMap.addLight(renderX + tileWidth / 2, renderY + tileWidth / 2, (float) (15 - Math.random() * 2), new Color(0xbb5510FF));
+            LD39.instance.getLightMap().addLight(renderX + tileWidth / 2, renderY + tileWidth / 2, (float) (15 - Math.random() * 2), new Color(0xbb5510FF));
         }
     }
 }

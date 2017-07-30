@@ -3,18 +3,15 @@ package org.epoxide.ld39;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.controllers.Controller;
-import com.badlogic.gdx.controllers.Controllers;
-import com.badlogic.gdx.graphics.Camera;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
-import com.badlogic.gdx.utils.TimeUtils;
 import org.epoxide.ld39.client.render.RenderManager;
+import org.epoxide.ld39.client.render.hud.HudDebugInfo;
+import org.epoxide.ld39.client.render.hud.IHud;
 import org.epoxide.ld39.client.render.lighting.LightMap;
 import org.epoxide.ld39.entity.EntityPlayer;
 import org.epoxide.ld39.world.MapHandler;
@@ -24,25 +21,21 @@ public class LD39 extends ApplicationAdapter {
 
     public static final float tileWidth = 32f;
     public static final String ID = "ld39";
-    private static boolean DEBUG = true;
 
     public static LD39 instance;
 
-    private double STEP = 1d / 120d;
-    private double accumulator = 0;
-
-    private SpriteBatch batch;
-    private BitmapFont font;
-
-    private OrthographicCamera camera;
-    private RenderManager renderManager;
-    public EntityPlayer entityPlayer;
-    private World world;
-    public LightMap lightMap;
-
-    public ShaderProgram defaultShader;
-    
+    private boolean debug = true;
     private GameState state;
+    private RenderManager renderManager;
+    private SpriteBatch batch;
+    private OrthographicCamera camera;
+    private ShaderProgram defaultShader;   
+    private BitmapFont font;
+    private LightMap lightMap;
+    private double step = 1d / 120d;
+    private double accumulator = 0;
+    private World world;
+    private EntityPlayer entityPlayer;
 
     @Override
     public void create() {
@@ -72,8 +65,8 @@ public class LD39 extends ApplicationAdapter {
 
         accumulator += delta;
         if(state == GameState.RUNNING) {
-            while(accumulator >= STEP) {
-                accumulator -= STEP;
+            while(accumulator >= step) {
+                accumulator -= step;
                 updateGame(delta);
             }
         }else{
@@ -93,30 +86,6 @@ public class LD39 extends ApplicationAdapter {
         this.batch.setShader(this.defaultShader);
         this.lightMap.render(this.batch, delta);
         this.renderManager.renderGame(batch, delta);
-
-        if (DEBUG) {
-            this.batch.begin();
-            this.batch.setShader(this.defaultShader);
-            float textX = camera.position.x - Gdx.graphics.getWidth() / 2 + 10;
-            float textY = camera.position.y + Gdx.graphics.getHeight() / 2;
-            this.font.draw(this.batch, "FPS: " + Gdx.graphics.getFramesPerSecond(), textX, textY - 10);
-            this.font.draw(this.batch, "GL_RENDERER = " + Gdx.gl.glGetString(GL20.GL_RENDERER), textX, textY - 30);
-            this.font.draw(this.batch, "GL_VENDOR = " + Gdx.gl.glGetString(GL20.GL_VENDOR), textX, textY - 50);
-            this.font.draw(this.batch, "GL_VERSION = " + Gdx.gl.glGetString(GL20.GL_VERSION), textX, textY - 70);
-            this.font.draw(this.batch, "WIDTH = " + Gdx.graphics.getWidth(), textX, textY - 90);
-            this.font.draw(this.batch, "HEIGHT = " + Gdx.graphics.getHeight(), textX, textY - 110);
-            this.font.draw(this.batch, "X = " + entityPlayer.x, textX, textY - 130);
-            this.font.draw(this.batch, "Y = " + entityPlayer.y, textX, textY - 150);
-            this.font.draw(this.batch, "GAMESTATE = " + state, textX, textY - 170);
-            this.font.draw(this.batch, "STEP = " + this.STEP, textX, textY - 190);
-            this.font.draw(this.batch, "ACCUMULATOR = " + this.accumulator, textX, textY - 210);
-            this.font.draw(this.batch, "DELTA = " + delta, textX, textY - 230);
-            this.font.draw(this.batch, "MX = " + Gdx.input.getX(), textX, textY - 250);
-            this.font.draw(this.batch, "MY = " + Gdx.input.getY(), textX, textY - 270);
-    
-    
-            this.batch.end();
-        }
     }
 
     
@@ -125,7 +94,7 @@ public class LD39 extends ApplicationAdapter {
     
     private void updateGame(float delta) {
         if(Gdx.input.isKeyPressed(Input.Keys.B)){
-            DEBUG = !DEBUG;
+            debug = !debug;
         }
         if (movementDelay > 0) {
             movementDelay--;
@@ -198,9 +167,54 @@ public class LD39 extends ApplicationAdapter {
     @Override
     public void dispose() {
     }
-    
-    public Camera getCamera() {
-    	
-    	return this.camera;
-    }
+
+	public GameState getState() {
+		return state;
+	}
+
+	public RenderManager getRenderManager() {
+		return renderManager;
+	}
+
+	public SpriteBatch getBatch() {
+		return batch;
+	}
+
+	public OrthographicCamera getCamera() {
+		return camera;
+	}
+
+	public ShaderProgram getDefaultShader() {
+		return defaultShader;
+	}
+
+	public BitmapFont getFont() {
+		return font;
+	}
+
+	public LightMap getLightMap() {
+		return lightMap;
+	}
+
+	public double getStep() {
+		return step;
+	}
+
+	public World getWorld() {
+		return world;
+	}
+
+	public EntityPlayer getEntityPlayer() {
+		return entityPlayer;
+	}
+	
+	public double getAccumulator() {
+		
+		return this.accumulator;
+	}
+	
+	public boolean isDebugEnabled() {
+		
+		return this.debug;
+	}
 }
