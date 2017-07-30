@@ -26,7 +26,6 @@ public class LD39 extends ApplicationAdapter {
     public static LD39 instance;
 
     private double STEP = 1d / 120d;
-    private double prevTime;
     private double accumulator = 0;
 
     private SpriteBatch batch;
@@ -72,12 +71,9 @@ public class LD39 extends ApplicationAdapter {
 
     @Override
     public void render() {
-        double currentTime = TimeUtils.millis() / 1000.0;
-        double frameTime = Math.min(currentTime - prevTime, 0.25);
-        final float delta = (float) frameTime;
+        final float delta = Gdx.graphics.getDeltaTime();
 
-        prevTime = currentTime;
-        accumulator += frameTime;
+        accumulator += delta;
         if(state == GameState.RUNNING) {
             while(accumulator >= STEP) {
                 accumulator -= STEP;
@@ -121,6 +117,12 @@ public class LD39 extends ApplicationAdapter {
             this.font.draw(this.batch, "X = " + entityPlayer.x, textX, textY - 130);
             this.font.draw(this.batch, "Y = " + entityPlayer.y, textX, textY - 150);
             this.font.draw(this.batch, "GAMESTATE = " + state, textX, textY - 170);
+            this.font.draw(this.batch, "STEP = " + this.STEP, textX, textY - 190);
+            this.font.draw(this.batch, "ACCUMULATOR = " + this.accumulator, textX, textY - 210);
+            this.font.draw(this.batch, "DELTA = " + delta, textX, textY - 230);
+            this.font.draw(this.batch, "MX = " + Gdx.input.getX(), textX, textY - 250);
+            this.font.draw(this.batch, "MY = " + Gdx.input.getY(), textX, textY - 270);
+    
     
             this.batch.end();
         }
