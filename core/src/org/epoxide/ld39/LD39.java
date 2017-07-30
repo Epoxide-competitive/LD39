@@ -1,16 +1,20 @@
 package org.epoxide.ld39;
 
-import com.badlogic.gdx.*;
-import com.badlogic.gdx.graphics.*;
+import com.badlogic.gdx.ApplicationAdapter;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
-import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.TimeUtils;
 import org.epoxide.ld39.client.render.RenderManager;
 import org.epoxide.ld39.client.render.lighting.LightMap;
 import org.epoxide.ld39.entity.EntityPlayer;
-import org.epoxide.ld39.world.*;
+import org.epoxide.ld39.world.MapHandler;
+import org.epoxide.ld39.world.World;
 
 public class LD39 extends ApplicationAdapter {
 
@@ -53,7 +57,7 @@ public class LD39 extends ApplicationAdapter {
         this.lightShader.end();
 
         this.renderManager = new RenderManager();
-        int[][] map = new MapHandler(100,100).map;
+        int[][] map = new MapHandler(100, 100).map;
         this.world = new World(map);
         this.entityPlayer = new EntityPlayer(this.world);
         this.lightMap = new LightMap();
@@ -77,7 +81,7 @@ public class LD39 extends ApplicationAdapter {
     }
 
     private void renderGame(float delta) {
-        this.lightMap.addLight(camera.position.x - Gdx.graphics.getWidth()/2+Gdx.input.getX(), camera.position.y+Gdx.graphics.getHeight()/2 - Gdx.input.getY(), 64, Color.WHITE);
+        this.lightMap.addLight(camera.position.x - Gdx.graphics.getWidth() / 2 + Gdx.input.getX(), camera.position.y + Gdx.graphics.getHeight() / 2 - Gdx.input.getY(), 150, Color.WHITE);
         Gdx.gl.glClearColor(0, 0, 0, 0);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         camera.update();
@@ -95,62 +99,63 @@ public class LD39 extends ApplicationAdapter {
         if (DEBUG) {
             this.batch.begin();
             this.batch.setShader(this.defaultShader);
-            float textX = camera.position.x - Gdx.graphics.getWidth()/2+10;
-            float textY = camera.position.y+Gdx.graphics.getHeight()/2;
+            float textX = camera.position.x - Gdx.graphics.getWidth() / 2 + 10;
+            float textY = camera.position.y + Gdx.graphics.getHeight() / 2;
             this.font.draw(this.batch, "FPS: " + Gdx.graphics.getFramesPerSecond(), textX, textY - 10);
             this.font.draw(this.batch, "GL_RENDERER = " + Gdx.gl.glGetString(GL20.GL_RENDERER), textX, textY - 30);
             this.font.draw(this.batch, "GL_VENDOR = " + Gdx.gl.glGetString(GL20.GL_VENDOR), textX, textY - 50);
             this.font.draw(this.batch, "GL_VERSION = " + Gdx.gl.glGetString(GL20.GL_VERSION), textX, textY - 70);
             this.font.draw(this.batch, "WIDTH = " + Gdx.graphics.getWidth(), textX, textY - 90);
             this.font.draw(this.batch, "HEIGHT = " + Gdx.graphics.getHeight(), textX, textY - 110);
-            this.font.draw(this.batch, "CAM = " + camera.position, textX, textY - 130);
-    
+            this.font.draw(this.batch, "X = " + entityPlayer.x, textX, textY - 130);
+            this.font.draw(this.batch, "Y = " + entityPlayer.y, textX, textY - 150);
+            this.font.draw(this.batch, "CAM = " + camera.position, textX, textY - 170);
             this.batch.end();
         }
     }
+
     private int movementDelay = 20;
+
     private void updateGame(float delta) {
-        if(movementDelay>0){
+        if (movementDelay > 0) {
             movementDelay--;
-        }else {
-    
+        } else {
             float movementX = 0;
             float movementY = 0;
-            if(Gdx.input.isKeyPressed(Input.Keys.W)) {
-                movementY += 32;
+            if (Gdx.input.isKeyPressed(Input.Keys.W)) {
+                movementY += 1;
             }
-            if(Gdx.input.isKeyPressed(Input.Keys.S)) {
-                movementY -= 32;
+            if (Gdx.input.isKeyPressed(Input.Keys.S)) {
+                movementY -= 1;
             }
-            if(Gdx.input.isKeyPressed(Input.Keys.A)) {
-                movementX -= 32;
+            if (Gdx.input.isKeyPressed(Input.Keys.A)) {
+                movementX -= 1;
             }
-            if(Gdx.input.isKeyPressed(Input.Keys.D)) {
-                movementX += 32;
+            if (Gdx.input.isKeyPressed(Input.Keys.D)) {
+                movementX += 1;
             }
-            if(movementX != 0 || movementY != 0) {
-                if(camera.position.x + movementX - Gdx.graphics.getWidth() / 2 > 0) {
-                    camera.translate(movementX, 0);
+            if (movementX != 0 || movementY != 0) {
+                if (entityPlayer.x + movementX > 0) {
+                    entityPlayer.x += movementX;
                 } else {
-                    camera.position.x = Gdx.graphics.getWidth() / 2;
+                    entityPlayer.x = 0;
                 }
-                if(camera.position.y + movementY - Gdx.graphics.getHeight() / 2 > 0) {
-                    camera.translate(0, movementY);
+                if (entityPlayer.y + movementY > 0) {
+                    entityPlayer.y += movementY;
                 } else {
-                    camera.position.y = Gdx.graphics.getHeight() / 2;
+                    entityPlayer.y = 0;
                 }
-                camera.update();
                 movementDelay = 20;
             }
         }
-    
+
     }
 
     @Override
     public void resize(int width, int height) {
         this.camera.setToOrtho(false, width, height);
         camera.update();
-        
+
         this.lightMap.adjustSize(width, height);
 
         this.lightShader.begin();
