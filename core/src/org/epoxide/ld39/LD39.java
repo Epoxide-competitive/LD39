@@ -2,7 +2,7 @@ package org.epoxide.ld39;
 
 import org.epoxide.ld39.client.render.RenderManager;
 import org.epoxide.ld39.client.render.lighting.LightMap;
-import org.epoxide.ld39.entity.EntityPlayer;
+import org.epoxide.ld39.entity.*;
 import org.epoxide.ld39.input.InputHandler;
 import org.epoxide.ld39.world.MapHandler;
 import org.epoxide.ld39.world.World;
@@ -15,6 +15,8 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
+
+import java.util.*;
 
 public class LD39 extends ApplicationAdapter {
 
@@ -36,7 +38,8 @@ public class LD39 extends ApplicationAdapter {
     private World world;
     private EntityPlayer entityPlayer;
     private final InputHandler inputHandler = new InputHandler();
-
+    private List<Entity> entities = new ArrayList<>();
+    
     @Override
     public void create () {
 
@@ -57,6 +60,7 @@ public class LD39 extends ApplicationAdapter {
         this.world = new World(map);
         this.entityPlayer = new EntityPlayer(this.world);
         this.state = GameState.RUNNING;
+        entities.add(entityPlayer);
     }
 
     @Override
@@ -90,6 +94,7 @@ public class LD39 extends ApplicationAdapter {
     private void updateGame (float delta) {
 
         this.inputHandler.onUpdate(delta);
+        entities.forEach(Entity::update);
     }
 
     @Override
@@ -174,5 +179,9 @@ public class LD39 extends ApplicationAdapter {
     public void toggleDebug () {
 
         this.debug = !this.debug;
+    }
+    
+    public List<Entity> getEntities() {
+        return entities;
     }
 }
