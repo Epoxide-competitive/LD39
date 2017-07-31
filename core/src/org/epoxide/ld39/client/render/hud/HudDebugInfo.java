@@ -37,7 +37,8 @@ public class HudDebugInfo implements IHud {
         font.draw(batch, "ACCUMULATOR = " + game.getAccumulator(), textX, textY - 210);
         font.draw(batch, "DELTA = " + delta, textX, textY - 230);
         font.draw(batch, "MX = " + Gdx.input.getX(), textX, textY - 250);
-        font.draw(batch, "MY = " + Gdx.input.getY(), textX, textY - 270);
+        font.draw(batch, "MY = " + Gdx.input.getY(), textX, textY - 270);        
+        font.draw(batch, game.getWorld().getTileState((int) player.x, (int) player.y + 1).tile.getIdentifier().toString(), textX, textY - 290);
         batch.end();
     }
 }
