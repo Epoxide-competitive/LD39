@@ -4,6 +4,8 @@ import org.epoxide.ld39.client.render.RenderManager;
 import org.epoxide.ld39.client.render.lighting.LightMap;
 import org.epoxide.ld39.entity.*;
 import org.epoxide.ld39.input.InputHandler;
+import org.epoxide.ld39.logging.LogManager;
+import org.epoxide.ld39.logging.Logger;
 import org.epoxide.ld39.world.MapHandler;
 import org.epoxide.ld39.world.World;
 
@@ -22,6 +24,7 @@ public class LD39 extends ApplicationAdapter {
 
     public static final float tileWidth = 32f;
     public static final String ID = "ld39";
+    public static final Logger log = LogManager.createLogger(ID);
 
     public static LD39 instance;
 
