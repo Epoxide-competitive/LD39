@@ -34,7 +34,11 @@ public class World {
         for (int i = 0; i < this.width; i++) {
             for (int j = 0; j < this.height; j++) {
 
-                this.tileMap[i][j] = map[i][j] == 1 ? new TileState(Tile.REGISTRY.getRandomValue(new Random()), i, j) : new TileState(Tile.FLOOR, i, j);
+                Tile genTile = Tile.REGISTRY.getRandomValue(new Random());
+                
+                if (genTile == Tile.VOID || genTile.isCollidable())
+                    genTile = Tile.WALL;
+                this.tileMap[i][j] = map[i][j] == 1 ? new TileState(genTile, i, j) : new TileState(Tile.FLOOR, i, j);
                 if (map[i][j] != 1 && Math.random() > 0.99) {
                     this.tileMap[i][j] = new TileStateTorch(Tile.FLOOR, i, j);
                 }
