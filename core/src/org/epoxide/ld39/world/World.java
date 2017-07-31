@@ -1,5 +1,6 @@
 package org.epoxide.ld39.world;
 
+import java.util.Map.Entry;
 import java.util.Random;
 
 import org.epoxide.ld39.tile.Tile;
@@ -53,6 +54,12 @@ public class World {
 
     public TileState getTileState (int x, int y) {
 
+        if (x < 0 || y < 0 || x >= this.tileMap.length || y >= this.tileMap[0].length) {
+            
+            // Pass a fake TileState, since too many places expect non null. 
+            return new TileState(Tile.VOID, 0f, 0f);
+        }
+        
         return this.tileMap[x][y] == null ? new TileState(Tile.VOID, x, y) : this.tileMap[x][y];
     }
 }
