@@ -24,21 +24,15 @@ public class KeyBindMovement extends KeyBindMulti {
         boolean moved = false;
         final float prevX = player.x;
         final float prevY = player.y;
-
-        if (player.getMovementDelay() > 0) {
-
-            player.setMovementDelay(player.getMovementDelay() - 1);
-        }
-
-        else {
-
+        if(!player.hasMotion())
+        {
             if (this.direction == Direction.UP) {
                 if (world.getTileState((int) player.x, (int) player.y + 1).tile.isCollidable()) {
                     if (player.y + 1 > world.getMapHeight() - 1) {
                         player.y = world.getMapHeight() - 1;
                     }
                     else {
-                        player.y++;
+                        player.addMotionY(1);
                     }
                     moved = true;
                 }
@@ -49,7 +43,7 @@ public class KeyBindMovement extends KeyBindMulti {
                         player.y = 0;
                     }
                     else {
-                        player.y--;
+                        player.addMotionY(-1);
                     }
                     moved = true;
                 }
@@ -60,7 +54,7 @@ public class KeyBindMovement extends KeyBindMulti {
                         player.x = 0;
                     }
                     else {
-                        player.x--;
+                        player.addMotionX(-1);
                     }
                     moved = true;
                 }
@@ -71,7 +65,7 @@ public class KeyBindMovement extends KeyBindMulti {
                         player.x = world.getMapWidth() - 1;
                     }
                     else {
-                        player.x++;
+                        player.addMotionX(1);
                     }
                     moved = true;
                 }
@@ -82,11 +76,12 @@ public class KeyBindMovement extends KeyBindMulti {
                 }
                 else {
                     player.power = 0;
+                    player.setMotionX(0);
+                    player.setMotionY(0);
                     player.x = prevX;
                     player.y = prevY;
                 }
 
-                player.resetMovementDelay();
             }
         }
     }

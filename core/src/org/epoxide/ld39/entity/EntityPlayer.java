@@ -6,34 +6,75 @@ import java.util.Random;
 
 public class EntityPlayer extends Entity {
 
-    private final int movementDelayDefault = 20;
-    private int movementDelay;
-
-    public float power = 500;
-    public float maxPower = 500;
-
+    public float power = 100;
+    public float maxPower = 100;
+    private final double movementSpeed = 0.05;
+    
     public EntityPlayer (World world) {
 
         super(world);
         randomizeLocation(world);
-        this.movementDelay = this.movementDelayDefault;
-    }
-
-    public int getMovementDelay () {
-
-        return this.movementDelay;
-    }
-
-    public void setMovementDelay (int movementDelay) {
-
-        this.movementDelay = movementDelay;
-    }
-
-    public void resetMovementDelay () {
-
-        this.movementDelay = this.movementDelayDefault;
     }
     
+    
+    @Override
+    public void update() {
+        super.update();
+        if(motionX > 0) {
+            this.x += movementSpeed;
+            motionX -= movementSpeed;
+            if(motionX <= 0) {
+                motionX = 0;
+            }
+        } else if(motionX < 0) {
+            this.x -= movementSpeed;
+            motionX += movementSpeed;
+            if(motionX >= 0) {
+                motionX = 0;
+            }
+        }
+    
+        if(motionY > 0) {
+            this.y += movementSpeed;
+            motionY -= movementSpeed;
+            if(motionY <= 0) {
+                motionY = 0;
+            }
+        } else if(motionY < 0) {
+            this.y -= movementSpeed;
+            motionY += movementSpeed;
+            if(motionY >= 0) {
+                motionY = 0;
+            }
+        }
+        if(!this.hasMotion()) {
+            this.x = Math.round(x);
+            this.y = Math.round(y);
+        }
+    }
+    
+    public double getMotionX() {
+        return motionX;
+    }
+    
+    public void setMotionX(double motionX) {
+        this.motionX = motionX;
+    }
+    
+    public double getMotionY() {
+        return motionY;
+    }
+    
+    public void setMotionY(double motionY) {
+        this.motionY = motionY;
+    }
+    
+    public void addMotionX(double motionX){
+        this.motionX+= motionX;
+    }
+    public void addMotionY(double motionY){
+        this.motionY+= motionY;
+    }
     
     private void randomizeLocation(World world){
         Random rand = new Random();
@@ -48,5 +89,16 @@ public class EntityPlayer extends Entity {
         }
         
     }
+    
+    public boolean hasMotion(){
+        return hasMotionX() ||hasMotionY();
+    }
+    public boolean hasMotionX(){
+        return motionX !=0;
+    }
+    public boolean hasMotionY(){
+        return motionY !=0;
+    }
+    
     
 }
