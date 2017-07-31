@@ -6,7 +6,7 @@ import org.epoxide.ld39.LD39;
 import org.epoxide.ld39.input.keybind.KeyBind;
 import org.epoxide.ld39.input.keybind.KeyBindDebug;
 import org.epoxide.ld39.input.keybind.KeyBindPause;
-import org.epoxide.ld39.input.keybind.KeyMovement;
+import org.epoxide.ld39.input.keybind.KeyBindMovement;
 import org.epoxide.ld39.util.Direction;
 
 import com.badlogic.gdx.Input.Keys;
@@ -17,10 +17,10 @@ public class InputHandler implements InputProcessor {
     // TODO Centralize registries
     public static final NamedRegistry<KeyBind> REGISTRY = new NamedRegistry<>();
 
-    public static final KeyBind UP = registerKeyBind("up", new KeyMovement(Direction.UP, Keys.W, Keys.UP));
-    public static final KeyBind DOWN = registerKeyBind("down", new KeyMovement(Direction.DOWN, Keys.S, Keys.DOWN));
-    public static final KeyBind LEFT = registerKeyBind("left", new KeyMovement(Direction.LEFT, Keys.A, Keys.LEFT));
-    public static final KeyBind RIGHT = registerKeyBind("right", new KeyMovement(Direction.RIGHT, Keys.D, Keys.RIGHT));
+    public static final KeyBind UP = registerKeyBind("up", new KeyBindMovement(Direction.UP, Keys.W, Keys.UP));
+    public static final KeyBind DOWN = registerKeyBind("down", new KeyBindMovement(Direction.DOWN, Keys.S, Keys.DOWN));
+    public static final KeyBind LEFT = registerKeyBind("left", new KeyBindMovement(Direction.LEFT, Keys.A, Keys.LEFT));
+    public static final KeyBind RIGHT = registerKeyBind("right", new KeyBindMovement(Direction.RIGHT, Keys.D, Keys.RIGHT));
 
     public static final KeyBind DEBUG = registerKeyBind("debug", new KeyBindDebug(Keys.TAB));
     public static final KeyBind PAUSE = registerKeyBind("pause", new KeyBindPause(Keys.E));

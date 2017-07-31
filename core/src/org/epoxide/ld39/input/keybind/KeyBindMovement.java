@@ -5,11 +5,11 @@ import org.epoxide.ld39.entity.EntityPlayer;
 import org.epoxide.ld39.util.Direction;
 import org.epoxide.ld39.world.World;
 
-public class KeyMovement extends KeyBindMulti {
+public class KeyBindMovement extends KeyBindMulti {
 
     private final Direction direction;
 
-    public KeyMovement (Direction direction, int... keycodes) {
+    public KeyBindMovement (Direction direction, int... keycodes) {
 
         super(keycodes);
         this.direction = direction;
