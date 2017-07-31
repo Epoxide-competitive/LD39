@@ -65,10 +65,11 @@ public class LD39 extends ApplicationAdapter {
         final float delta = Gdx.graphics.getDeltaTime();
 
         this.accumulator += delta;
-        if (this.state == GameState.RUNNING) {
+        
             while (this.accumulator >= this.step) {
                 this.accumulator -= this.step;
-                this.updateGame(delta);
+                if (this.state == GameState.RUNNING) {
+                   this.updateGame(delta);
             }
         }
 
