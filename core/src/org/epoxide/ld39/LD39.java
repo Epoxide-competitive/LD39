@@ -14,6 +14,7 @@ import org.epoxide.ld39.client.render.hud.HudDebugInfo;
 import org.epoxide.ld39.client.render.hud.IHud;
 import org.epoxide.ld39.client.render.lighting.LightMap;
 import org.epoxide.ld39.entity.EntityPlayer;
+import org.epoxide.ld39.input.InputHandler;
 import org.epoxide.ld39.world.MapHandler;
 import org.epoxide.ld39.world.World;
 
@@ -36,6 +37,7 @@ public class LD39 extends ApplicationAdapter {
     private double accumulator = 0;
     private World world;
     private EntityPlayer entityPlayer;
+    private InputHandler inputHandler = new InputHandler();
 
     @Override
     public void create() {
@@ -49,14 +51,14 @@ public class LD39 extends ApplicationAdapter {
         
         this.defaultShader = new ShaderProgram(Gdx.files.internal("assets/ld39/shaders/main.vert"), Gdx.files.internal("assets/ld39/shaders/main.frag"));
 
+        Gdx.input.setInputProcessor(inputHandler);
+        Gdx.graphics.setCursor(Gdx.graphics.newCursor(new Pixmap(Gdx.files.internal("assets/ld39/textures/misc/cursor_64.png")), 0, 0));
+        
         this.renderManager = new RenderManager();
         int[][] map = new MapHandler(100, 100).map;
         this.world = new World(map);
         this.entityPlayer = new EntityPlayer(this.world);
         state = GameState.RUNNING;
-        
-        Pixmap pm = new Pixmap(Gdx.files.internal("assets/ld39/textures/misc/cursor_64.png"));
-        Gdx.graphics.setCursor(Gdx.graphics.newCursor(pm, 0, 0));
     }
 
     @Override
@@ -87,72 +89,10 @@ public class LD39 extends ApplicationAdapter {
         this.lightMap.render(this.batch, delta);
         this.renderManager.renderGame(batch, delta);
     }
-
-    
-    private final int movementDelayDefault = 10;
-    private int movementDelay = movementDelayDefault;
     
     private void updateGame(float delta) {
-        if(Gdx.input.isKeyPressed(Input.Keys.B)){
-            debug = !debug;
-        }
-        if (movementDelay > 0) {
-            movementDelay--;
-        } else {
-            boolean moved = false;
-            float prevX = entityPlayer.x, prevY = entityPlayer.y;
-            if (Gdx.input.isKeyPressed(Input.Keys.W)) {
-                if(world.getTileState((int)entityPlayer.x, (int)entityPlayer.y+1).tile.isCollidable()) {
-                    if(entityPlayer.y + 1 > world.getMapHeight() - 1) {
-                        entityPlayer.y = world.getMapHeight() - 1;
-                    } else {
-                        entityPlayer.y++;
-                    }
-                    moved = true;
-                }
-            }else if (Gdx.input.isKeyPressed(Input.Keys.S)) {
-                if(world.getTileState((int)entityPlayer.x, (int)entityPlayer.y-1).tile.isCollidable()) {
-                    if(entityPlayer.y - 1 < 0) {
-                        entityPlayer.y = 0;
-                    } else {
-                        entityPlayer.y--;
-                    }
-                    moved = true;
-                }
-            }else if (Gdx.input.isKeyPressed(Input.Keys.A)) {
-                if(world.getTileState((int)entityPlayer.x-1, (int)entityPlayer.y).tile.isCollidable()) {
-                    if(entityPlayer.x - 1 < 0) {
-                        entityPlayer.x = 0;
-                    } else {
-                        entityPlayer.x--;
-                    }
-                    moved = true;
-                }
-            }else if (Gdx.input.isKeyPressed(Input.Keys.D)) {
-                if(world.getTileState((int) entityPlayer.x + 1, (int) entityPlayer.y).tile.isCollidable()) {
-                    if(entityPlayer.x + 1 > world.getMapWidth() - 1) {
-                        entityPlayer.x = world.getMapWidth() - 1;
-                    } else {
-                        entityPlayer.x++;
-                    }
-                    moved = true;
-                }
-            }
-            if(moved){
-                if(entityPlayer.power>0){
-                    entityPlayer.power--;
-                }else{
-                    entityPlayer.power=0;
-                    entityPlayer.x = prevX;
-                    entityPlayer.y = prevY;
-                }
-                movementDelay = movementDelayDefault;
-            }
-        }
-        if(Gdx.input.isKeyPressed(Input.Keys.E)){
-            this.state = GameState.PAUSED;
-        }
-
+        
+        inputHandler.onUpdate(delta);
     }
 
     @Override
@@ -170,6 +110,11 @@ public class LD39 extends ApplicationAdapter {
 
 	public GameState getState() {
 		return state;
+	}
+	
+	public void setState(GameState state) {
+	    
+	    this.state = state;
 	}
 
 	public RenderManager getRenderManager() {
@@ -216,5 +161,10 @@ public class LD39 extends ApplicationAdapter {
 	public boolean isDebugEnabled() {
 		
 		return this.debug;
+	}
+	
+	public void toggleDebug() {
+	    
+	    this.debug = !this.debug;
 	}
 }
