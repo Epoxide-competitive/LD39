@@ -33,7 +33,7 @@ public class Tile extends Registerable<Tile> {
     
     protected Tile setUV (int u, int v, int u2, int v2) {
         
-        return setUV(u * 0.062f, v * 0.0625f, u2 * 0.0625f, v2 * 0.0625f);
+        return setUV((float)u * 0.062f, (float) v * 0.0625f, (float) u2 * 0.0625f, (float) v2 * 0.0625f);
     }
 
     protected Tile setUV (float u, float v, float u2, float v2) {
