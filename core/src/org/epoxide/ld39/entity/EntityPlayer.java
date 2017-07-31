@@ -2,9 +2,11 @@ package org.epoxide.ld39.entity;
 
 import org.epoxide.ld39.world.World;
 
+import java.util.Random;
+
 public class EntityPlayer extends Entity {
 
-    private final int movementDelayDefault = 10;
+    private final int movementDelayDefault = 20;
     private int movementDelay;
 
     public float power = 500;
@@ -13,8 +15,7 @@ public class EntityPlayer extends Entity {
     public EntityPlayer (World world) {
 
         super(world);
-        this.x = world.getMapWidth() / 2;
-        this.y = world.getMapHeight() / 2;
+        randomizeLocation(world);
         this.movementDelay = this.movementDelayDefault;
     }
 
@@ -32,4 +33,20 @@ public class EntityPlayer extends Entity {
 
         this.movementDelay = this.movementDelayDefault;
     }
+    
+    
+    private void randomizeLocation(World world){
+        Random rand = new Random();
+        while(true){
+            int randX = rand.nextInt(world.getMapWidth());
+            int randY = rand.nextInt(world.getMapHeight());
+            if(world.getTileState(randX, randY).tile.isCollidable()){
+                this.x = randX;
+                this.y = randY;
+                break;
+            }
+        }
+        
+    }
+    
 }
