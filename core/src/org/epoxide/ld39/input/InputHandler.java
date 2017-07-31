@@ -21,7 +21,15 @@ public class InputHandler implements InputProcessor {
     public static final KeyBind DOWN = registerKeyBind("down", new KeyBindMovement(Direction.DOWN, Keys.S, Keys.DOWN));
     public static final KeyBind LEFT = registerKeyBind("left", new KeyBindMovement(Direction.LEFT, Keys.A, Keys.LEFT));
     public static final KeyBind RIGHT = registerKeyBind("right", new KeyBindMovement(Direction.RIGHT, Keys.D, Keys.RIGHT));
-
+    
+    public static final KeyBind POWER = registerKeyBind("power", new KeyBind(Keys.F){
+        @Override
+        public void onPressed() {
+            super.onPressed();
+            LD39.instance.getEntityPlayer().power =  LD39.instance.getEntityPlayer().maxPower;
+        }
+    });
+    
     public static final KeyBind DEBUG = registerKeyBind("debug", new KeyBindDebug(Keys.TAB));
     public static final KeyBind PAUSE = registerKeyBind("pause", new KeyBindPause(Keys.E));
 
