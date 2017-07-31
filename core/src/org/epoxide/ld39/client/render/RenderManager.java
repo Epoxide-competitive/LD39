@@ -4,7 +4,7 @@ import org.epoxide.ld39.LD39;
 import org.epoxide.ld39.client.render.hud.HudDebugInfo;
 import org.epoxide.ld39.client.render.hud.HudHealth;
 import org.epoxide.ld39.client.render.hud.IHud;
-import org.epoxide.ld39.entity.EntityPlayer;
+import org.epoxide.ld39.entity.*;
 import org.epoxide.ld39.tile.Tile;
 import org.epoxide.ld39.tile.TileState;
 import org.epoxide.ld39.world.World;
@@ -17,6 +17,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 public class RenderManager {
 
     public static final Texture TILE_TEXTURE = new Texture("assets/ld39/textures/tile/tiles.png");
+    public static final Texture ITEM_TEXTURE = new Texture("assets/ld39/textures/items/items.png");
     public static final Texture ENTITY_TEXTURE = new Texture("assets/ld39/textures/entities/entities.png");
     
     
@@ -29,6 +30,8 @@ public class RenderManager {
         this.renderTiles(batch, delta, TileLayer.LAYER_TILE_BACKGROUND);
         this.renderEntities(batch, delta);
         this.renderTiles(batch, delta, TileLayer.LAYER_TILE_FOREGROUND);
+        this.renderTiles(batch, delta, TileLayer.LAYER_TILE_FOREGROUND);
+        this.renderItems(batch, delta);
         this.renderPlayer(batch, delta);
         this.renderHud(batch, delta);
 
@@ -48,7 +51,7 @@ public class RenderManager {
 
         batch.begin();
         batch.draw(ENTITY_TEXTURE, Gdx.graphics.getWidth() / 2 - LD39.tileWidth / 2, Gdx.graphics.getHeight() / 2 - LD39.tileWidth / 2, LD39.tileWidth, LD39.tileWidth, 1*0.0625f, 1*0.0625f, 0, 0);
-        LD39.instance.getLightMap().addLight(Gdx.graphics.getWidth() / 2 - LD39.tileWidth / 2 + 16, Gdx.graphics.getHeight() / 2 - LD39.tileWidth / 2 + 16, 25, Color.WHITE);
+        LD39.instance.getLightMap().addLight(Gdx.graphics.getWidth() / 2 - LD39.tileWidth / 2 + 16, Gdx.graphics.getHeight() / 2 - LD39.tileWidth / 2 + 16, (float) (25- (Math.random()>0.2 ? Math.random() * 2 : 0)), Color.WHITE);
         batch.end();
     }
 
@@ -80,6 +83,24 @@ public class RenderManager {
                 }
             }
         }
+        batch.end();
+    }
+    
+    private void renderItems (SpriteBatch batch, float delta) {
+        
+        final EntityPlayer entityPlayer = LD39.instance.getEntityPlayer();
+        final World world = entityPlayer.world;
+        
+        final int x = (int) (entityPlayer.x * LD39.tileWidth - Gdx.graphics.getWidth() / 2 + LD39.tileWidth / 2);
+        final int y = (int) (entityPlayer.y * LD39.tileWidth - Gdx.graphics.getHeight() / 2 + LD39.tileWidth / 2);
+        
+        batch.begin();
+        LD39.instance.getEntities().stream().filter(entity -> entity instanceof EntityItem).filter(entity -> !((EntityItem)entity).getItemState().isEmpty()).forEach(entity ->{
+            EntityItem item = (EntityItem) entity;
+            final float renderX = item.x * LD39.tileWidth - x;
+            final float renderY = item.y * LD39.tileWidth - y;
+            item.getItemState().renderItem(batch, renderX, renderY, LD39.tileWidth);
+        });
         batch.end();
     }
 
