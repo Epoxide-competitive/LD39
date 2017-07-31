@@ -38,7 +38,7 @@ public class HudDebugInfo implements IHud {
         font.draw(batch, "DELTA = " + delta, textX, textY - 230);
         font.draw(batch, "MX = " + Math.round(((Gdx.input.getX()-LD39.instance.getCamera().position.x)/32) + player.x), textX, textY - 250);
         font.draw(batch, "MY = " + Math.round((-(Gdx.input.getY()-LD39.instance.getCamera().position.y)/32) + player.y), textX, textY - 270);
-        font.draw(batch, "MTILE = " + game.getWorld().getTileState((int) Math.round(((Gdx.input.getX()-LD39.instance.getCamera().position.x)/32) + player.x), (int)Math.round((-(Gdx.input.getY()-LD39.instance.getCamera().position.y)/32) + player.y)).tile.getIdentifier().toString(), textX, textY - 290);
+        font.draw(batch, "MTILE = " + game.getWorld().getTileState(Math.round(((Gdx.input.getX()-LD39.instance.getCamera().position.x)/32) + player.x), Math.round((-(Gdx.input.getY()-LD39.instance.getCamera().position.y)/32) + player.y)).tile.getIdentifier().toString(), textX, textY - 290);
     
         font.draw(batch, game.getWorld().getTileState((int) player.x, (int) player.y + 1).tile.getIdentifier().toString(), textX, textY - 310);
         batch.end();
