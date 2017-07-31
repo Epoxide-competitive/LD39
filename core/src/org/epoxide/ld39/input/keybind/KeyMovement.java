@@ -18,7 +18,6 @@ public class KeyMovement extends KeyBindMulti {
     @Override
     public void onUpdate (float delta) {
 
-        
         final EntityPlayer player = LD39.instance.getEntityPlayer();
         final World world = LD39.instance.getWorld();
 

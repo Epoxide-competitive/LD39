@@ -16,14 +16,15 @@ public class Tile extends Registerable<Tile> {
 
     public float u, v, u2, v2;
     private boolean collidable = false;
-    
-    public static Tile registerTile(String id, Tile tile) {
+
+    public static Tile registerTile (String id, Tile tile) {
+
         tile.setIdentifier(new Identifier(LD39.ID, id));
         REGISTRY.registerValue(tile);
         return tile;
     }
 
-    protected Tile setUV(float u, float v, float u2, float v2) {
+    protected Tile setUV (float u, float v, float u2, float v2) {
 
         this.u = u;
         this.v = v;
@@ -32,15 +33,18 @@ public class Tile extends Registerable<Tile> {
         return this;
     }
 
-    public boolean shouldRenderLayer(TileLayer layer) {
+    public boolean shouldRenderLayer (TileLayer layer) {
+
         return layer == TileLayer.LAYER_TILE_BACKGROUND;
     }
-    
-    public boolean isCollidable() {
-        return collidable;
+
+    public boolean isCollidable () {
+
+        return this.collidable;
     }
-    
-    public Tile setCollidable(boolean collidable) {
+
+    public Tile setCollidable (boolean collidable) {
+
         this.collidable = collidable;
         return this;
     }

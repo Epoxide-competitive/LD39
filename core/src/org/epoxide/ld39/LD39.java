@@ -1,22 +1,20 @@
 package org.epoxide.ld39;
 
+import org.epoxide.ld39.client.render.RenderManager;
+import org.epoxide.ld39.client.render.lighting.LightMap;
+import org.epoxide.ld39.entity.EntityPlayer;
+import org.epoxide.ld39.input.InputHandler;
+import org.epoxide.ld39.world.MapHandler;
+import org.epoxide.ld39.world.World;
+
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
-import org.epoxide.ld39.client.render.RenderManager;
-import org.epoxide.ld39.client.render.hud.HudDebugInfo;
-import org.epoxide.ld39.client.render.hud.IHud;
-import org.epoxide.ld39.client.render.lighting.LightMap;
-import org.epoxide.ld39.entity.EntityPlayer;
-import org.epoxide.ld39.input.InputHandler;
-import org.epoxide.ld39.world.MapHandler;
-import org.epoxide.ld39.world.World;
 
 public class LD39 extends ApplicationAdapter {
 
@@ -30,137 +28,150 @@ public class LD39 extends ApplicationAdapter {
     private RenderManager renderManager;
     private SpriteBatch batch;
     private OrthographicCamera camera;
-    private ShaderProgram defaultShader;   
+    private ShaderProgram defaultShader;
     private BitmapFont font;
     private LightMap lightMap;
-    private double step = 1d / 120d;
+    private final double step = 1d / 120d;
     private double accumulator = 0;
     private World world;
     private EntityPlayer entityPlayer;
-    private InputHandler inputHandler = new InputHandler();
+    private final InputHandler inputHandler = new InputHandler();
 
     @Override
-    public void create() {
-        
+    public void create () {
+
         LD39.instance = this;
         this.batch = new SpriteBatch();
         this.font = new BitmapFont();
         this.camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         this.camera.setToOrtho(true, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         this.lightMap = new LightMap();
-        
+
         this.defaultShader = new ShaderProgram(Gdx.files.internal("assets/ld39/shaders/main.vert"), Gdx.files.internal("assets/ld39/shaders/main.frag"));
 
-        Gdx.input.setInputProcessor(inputHandler);
+        Gdx.input.setInputProcessor(this.inputHandler);
         Gdx.graphics.setCursor(Gdx.graphics.newCursor(new Pixmap(Gdx.files.internal("assets/ld39/textures/misc/cursor_64.png")), 0, 0));
-        
+
         this.renderManager = new RenderManager();
-        int[][] map = new MapHandler(100, 100).map;
+        final int[][] map = new MapHandler(100, 100).map;
         this.world = new World(map);
         this.entityPlayer = new EntityPlayer(this.world);
-        state = GameState.RUNNING;
+        this.state = GameState.RUNNING;
     }
 
     @Override
-    public void render() {
+    public void render () {
+
         final float delta = Gdx.graphics.getDeltaTime();
 
-        accumulator += delta;
-        if(state == GameState.RUNNING) {
-            while(accumulator >= step) {
-                accumulator -= step;
-                updateGame(delta);
+        this.accumulator += delta;
+        if (this.state == GameState.RUNNING) {
+            while (this.accumulator >= this.step) {
+                this.accumulator -= this.step;
+                this.updateGame(delta);
             }
         }
 
-        renderGame(delta);
+        this.renderGame(delta);
     }
 
-    private void renderGame(float delta) {
+    private void renderGame (float delta) {
+
         Gdx.gl.glClearColor(0, 0, 0, 0);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        camera.update();
+        this.camera.update();
         this.batch.setProjectionMatrix(this.camera.combined);
         this.batch.setShader(this.defaultShader);
         this.lightMap.render(this.batch, delta);
-        this.renderManager.renderGame(batch, delta);
+        this.renderManager.renderGame(this.batch, delta);
     }
-    
-    private void updateGame(float delta) {
-        
-        inputHandler.onUpdate(delta);
+
+    private void updateGame (float delta) {
+
+        this.inputHandler.onUpdate(delta);
     }
 
     @Override
-    public void resize(int width, int height) {
-    	
+    public void resize (int width, int height) {
+
         this.camera.setToOrtho(false, width, height);
-        camera.update();
+        this.camera.update();
 
         this.lightMap.adjustSize(width, height);
     }
 
     @Override
-    public void dispose() {
+    public void dispose () {
+        
     }
 
-	public GameState getState() {
-		return state;
-	}
-	
-	public void setState(GameState state) {
-	    
-	    this.state = state;
-	}
+    public GameState getState () {
 
-	public RenderManager getRenderManager() {
-		return renderManager;
-	}
+        return this.state;
+    }
 
-	public SpriteBatch getBatch() {
-		return batch;
-	}
+    public void setState (GameState state) {
 
-	public OrthographicCamera getCamera() {
-		return camera;
-	}
+        this.state = state;
+    }
 
-	public ShaderProgram getDefaultShader() {
-		return defaultShader;
-	}
+    public RenderManager getRenderManager () {
 
-	public BitmapFont getFont() {
-		return font;
-	}
+        return this.renderManager;
+    }
 
-	public LightMap getLightMap() {
-		return lightMap;
-	}
+    public SpriteBatch getBatch () {
 
-	public double getStep() {
-		return step;
-	}
+        return this.batch;
+    }
 
-	public World getWorld() {
-		return world;
-	}
+    public OrthographicCamera getCamera () {
 
-	public EntityPlayer getEntityPlayer() {
-		return entityPlayer;
-	}
-	
-	public double getAccumulator() {
-		
-		return this.accumulator;
-	}
-	
-	public boolean isDebugEnabled() {
-		
-		return this.debug;
-	}
-	
-	public void toggleDebug() {
-	    
-	    this.debug = !this.debug;
-	}
+        return this.camera;
+    }
+
+    public ShaderProgram getDefaultShader () {
+
+        return this.defaultShader;
+    }
+
+    public BitmapFont getFont () {
+
+        return this.font;
+    }
+
+    public LightMap getLightMap () {
+
+        return this.lightMap;
+    }
+
+    public double getStep () {
+
+        return this.step;
+    }
+
+    public World getWorld () {
+
+        return this.world;
+    }
+
+    public EntityPlayer getEntityPlayer () {
+
+        return this.entityPlayer;
+    }
+
+    public double getAccumulator () {
+
+        return this.accumulator;
+    }
+
+    public boolean isDebugEnabled () {
+
+        return this.debug;
+    }
+
+    public void toggleDebug () {
+
+        this.debug = !this.debug;
+    }
 }

@@ -7,35 +7,35 @@ import com.badlogic.gdx.Gdx;
 
 public class KeyBindMulti extends KeyBind {
 
-    private Set<Integer> keys = new HashSet<>();
-    
+    private final Set<Integer> keys = new HashSet<>();
+
     public KeyBindMulti (int... keycodes) {
-        
+
         super(-1);
-        
-        for (int key : keycodes) {
-            
-            keys.add(key);
+
+        for (final int key : keycodes) {
+
+            this.keys.add(key);
         }
     }
-    
+
     @Override
     public boolean isPressed () {
-        
-        for (Integer key : this.keys) {
-            
-            if ( Gdx.input.isKeyPressed(key)) {
-                
+
+        for (final Integer key : this.keys) {
+
+            if (Gdx.input.isKeyPressed(key)) {
+
                 return true;
             }
         }
-        
+
         return false;
     }
-    
+
     @Override
-    public boolean isListeningForCode(int code) {
-        
+    public boolean isListeningForCode (int code) {
+
         return this.keys.contains(code);
     }
 }

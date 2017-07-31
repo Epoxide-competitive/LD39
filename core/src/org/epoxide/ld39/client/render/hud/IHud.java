@@ -4,5 +4,5 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public interface IHud {
 
-	void renderHud(SpriteBatch batch, float delta);
+    void renderHud (SpriteBatch batch, float delta);
 }

@@ -11,7 +11,7 @@ public class Entity {
     public Direction rotation;
     public World world;
 
-    public Entity(World world) {
+    public Entity (World world) {
         this.world = world;
     }
 }

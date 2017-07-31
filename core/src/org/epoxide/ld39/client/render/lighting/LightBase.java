@@ -5,47 +5,47 @@ import com.badlogic.gdx.graphics.Texture;
 
 public class LightBase implements ILight {
 
-	private float posX;
-	private float posY;
-	private float strength;
-	private Color color;
-	
-	public LightBase(float x, float y, float strength, Color color) {
-		
-		this.posX = x;
-		this.posY = y;
-		this.strength = strength;
-		this.color = color;
-	}
-	
-	@Override
-	public float getStrength(float delta) {
+    private final float posX;
+    private final float posY;
+    private final float strength;
+    private final Color color;
 
-		//(128 / 100f) * 1024;
-		return 128 / 100f * (10 * this.strength);
-	}
+    public LightBase (float x, float y, float strength, Color color) {
 
-	@Override
-	public float getXPos() {
-		
-		return this.posX;
-	}
+        this.posX = x;
+        this.posY = y;
+        this.strength = strength;
+        this.color = color;
+    }
 
-	@Override
-	public float getYPos() {
+    @Override
+    public float getStrength (float delta) {
 
-		return this.posY;
-	}
+        // (128 / 100f) * 1024;
+        return 128 / 100f * (10 * this.strength);
+    }
 
-	@Override
-	public Color getColor() {
+    @Override
+    public float getXPos () {
 
-		return this.color;
-	}
+        return this.posX;
+    }
 
-	@Override
-	public Texture getLightTexture() {
-		
-		return LightMap.LIGHT_SPRITE;
-	}
+    @Override
+    public float getYPos () {
+
+        return this.posY;
+    }
+
+    @Override
+    public Color getColor () {
+
+        return this.color;
+    }
+
+    @Override
+    public Texture getLightTexture () {
+
+        return LightMap.LIGHT_SPRITE;
+    }
 }

@@ -1,5 +1,10 @@
 package org.epoxide.ld39.client.render.lighting;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.epoxide.ld39.LD39;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
@@ -10,32 +15,27 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.FrameBuffer;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.epoxide.ld39.LD39;
-
 public class LightMap {
 
     public static final Texture LIGHT_SPRITE = new Texture("assets/ld39/textures/misc/lightmap.png");
-    
-    private ShaderProgram lightShader;
+
+    private final ShaderProgram lightShader;
     private FrameBuffer lightBuffer;
     private float width = 1;
     private float height = 1;
-    private List<ILight> lights = new ArrayList<>();
+    private final List<ILight> lights = new ArrayList<>();
 
-    public LightMap() {
-    	
+    public LightMap () {
+
         this.lightShader = new ShaderProgram(Gdx.files.internal("assets/ld39/shaders/main.vert"), Gdx.files.internal("assets/ld39/shaders/light.frag"));
-        
-        lightShader.begin();
-        lightShader.setUniformf("ambientColor", 0.3f, 0.38f, 0.4f, 0.25f);
-        lightShader.setUniformi("u_lightmap", 1);
-        lightShader.end();
+
+        this.lightShader.begin();
+        this.lightShader.setUniformf("ambientColor", 0.3f, 0.38f, 0.4f, 0.25f);
+        this.lightShader.setUniformi("u_lightmap", 1);
+        this.lightShader.end();
     }
-    
-    public void adjustSize(int width, int height) {
+
+    public void adjustSize (int width, int height) {
 
         this.width = width;
         this.height = height;
@@ -45,20 +45,20 @@ public class LightMap {
             this.lightBuffer.dispose();
         }
 
-        lightBuffer = new FrameBuffer(Format.RGBA8888, (int) this.width, (int) this.height, false);
-        lightBuffer.getColorBufferTexture().setFilter(TextureFilter.Nearest, TextureFilter.Nearest);
-        
+        this.lightBuffer = new FrameBuffer(Format.RGBA8888, (int) this.width, (int) this.height, false);
+        this.lightBuffer.getColorBufferTexture().setFilter(TextureFilter.Nearest, TextureFilter.Nearest);
+
         this.lightShader.begin();
         this.lightShader.setUniformf("resolution", width, height);
         this.lightShader.end();
     }
 
-    public void render(SpriteBatch batch, float delta) {
-    	
-        lightBuffer.begin();
+    public void render (SpriteBatch batch, float delta) {
+
+        this.lightBuffer.begin();
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        for (ILight source : this.lights) {
+        for (final ILight source : this.lights) {
 
             batch.begin();
 
@@ -81,10 +81,10 @@ public class LightMap {
 
         }
 
-        lightBuffer.end();
+        this.lightBuffer.end();
         this.lights.clear();
-        
-        //TODO Make a better way to reset all of this, preferably reusable.
+
+        // TODO Make a better way to reset all of this, preferably reusable.
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         batch.setColor(Color.WHITE);
         batch.setProjectionMatrix(LD39.instance.getCamera().combined);
@@ -92,14 +92,14 @@ public class LightMap {
         this.resetBinds();
     }
 
-    public void resetBinds() {
-    	
+    public void resetBinds () {
+
         this.lightBuffer.getColorBufferTexture().bind(1);
         LIGHT_SPRITE.bind(0);
     }
 
-    public void addLight(float renderX, float renderY, float strength, Color color) {
-    	
+    public void addLight (float renderX, float renderY, float strength, Color color) {
+
         this.lights.add(new LightBase(renderX, renderY, strength, color));
     }
 }
