@@ -71,10 +71,6 @@ public class LD39 extends ApplicationAdapter {
                 accumulator -= step;
                 updateGame(delta);
             }
-        }else{
-            if(Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)){
-                state = GameState.RUNNING;
-            }
         }
 
         renderGame(delta);
