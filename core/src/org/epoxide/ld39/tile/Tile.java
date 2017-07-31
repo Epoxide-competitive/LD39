@@ -7,12 +7,19 @@ import org.epoxide.ld39.LD39;
 import org.epoxide.ld39.client.render.TileLayer;
 
 public class Tile extends Registerable<Tile> {
-    private static final NamedRegistry<Tile> REGISTRY = new NamedRegistry<>();
+    public static final NamedRegistry<Tile> REGISTRY = new NamedRegistry<>();
 
     public static final Tile VOID = registerTile("void", new Tile());
     public static final Tile WALL = registerTile("wall", new Tile()).setUV(0, 0, 1, 1);
     public static final Tile FLOOR = registerTile("floor", new Tile()).setUV(1, 0, 2, 1).setCollidable(true);
     public static final Tile TORCH = registerTile("torch", new TileVisual()).setUV(4, 0, 5, 1).setCollidable(true);
+    
+    public static final Tile ORE_COAL = registerTile("ore_coal", new Tile()).setUV(5, 0, 6, 1);
+    public static final Tile ORE_COPPER = registerTile("ore_copper", new Tile()).setUV(6, 0, 7, 1);
+    public static final Tile ORE_TIN = registerTile("ore_tin", new Tile()).setUV(7, 0, 8, 1);
+    public static final Tile ORE_SILVER = registerTile("ore_silver", new Tile()).setUV(8, 0, 9, 1);
+    public static final Tile ORE_GOLD = registerTile("ore_gold", new Tile()).setUV(9, 0, 10, 1);
+    public static final Tile ORE_COBALT = registerTile("ore_cobalt", new Tile()).setUV(10, 0, 11, 1);
 
     public float u, v, u2, v2;
     private boolean collidable = false;
