@@ -17,7 +17,9 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 public class RenderManager {
 
     public static final Texture TILE_TEXTURE = new Texture("assets/ld39/textures/tile/tiles.png");
-
+    public static final Texture ENTITY_TEXTURE = new Texture("assets/ld39/textures/entities/entities.png");
+    
+    
     // TODO move huds to a registry. Probably not in this class.
     private final IHud debugHud = new HudDebugInfo();
     private final IHud healthHud = new HudHealth();
@@ -45,7 +47,7 @@ public class RenderManager {
     private void renderPlayer (SpriteBatch batch, float delta) {
 
         batch.begin();
-        batch.draw(TILE_TEXTURE, Gdx.graphics.getWidth() / 2 - LD39.tileWidth / 2, Gdx.graphics.getHeight() / 2 - LD39.tileWidth / 2, LD39.tileWidth, LD39.tileWidth, 0, 0, 1, 1);
+        batch.draw(ENTITY_TEXTURE, Gdx.graphics.getWidth() / 2 - LD39.tileWidth / 2, Gdx.graphics.getHeight() / 2 - LD39.tileWidth / 2, LD39.tileWidth, LD39.tileWidth, 1*0.0625f, 1*0.0625f, 0, 0);
         LD39.instance.getLightMap().addLight(Gdx.graphics.getWidth() / 2 - LD39.tileWidth / 2 + 16, Gdx.graphics.getHeight() / 2 - LD39.tileWidth / 2 + 16, 25, Color.WHITE);
         batch.end();
     }
