@@ -66,4 +66,12 @@ public class World {
         
         return this.tileMap[x][y] == null ? new TileState(Tile.VOID, x, y) : this.tileMap[x][y];
     }
+    
+    public void setTileState (int x, int y, TileState state) {
+        if (x < 0 || y < 0 || x >= this.tileMap.length || y >= this.tileMap[0].length) {
+            return;
+        }
+        
+        this.tileMap[x][y] = state;
+    }
 }

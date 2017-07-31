@@ -1,16 +1,19 @@
 package org.epoxide.ld39.input;
 
+import com.badlogic.gdx.*;
 import org.epoxide.commons.registry.Identifier;
 import org.epoxide.commons.registry.NamedRegistry;
 import org.epoxide.ld39.LD39;
+import org.epoxide.ld39.entity.EntityPlayer;
 import org.epoxide.ld39.input.keybind.KeyBind;
 import org.epoxide.ld39.input.keybind.KeyBindDebug;
 import org.epoxide.ld39.input.keybind.KeyBindPause;
 import org.epoxide.ld39.input.keybind.KeyBindMovement;
+import org.epoxide.ld39.tile.*;
 import org.epoxide.ld39.util.Direction;
 
 import com.badlogic.gdx.Input.Keys;
-import com.badlogic.gdx.InputProcessor;
+import org.epoxide.ld39.world.World;
 
 public class InputHandler implements InputProcessor {
 
@@ -89,8 +92,14 @@ public class InputHandler implements InputProcessor {
 
     @Override
     public boolean touchDown (int screenX, int screenY, int pointer, int button) {
-
-        return false;
+        EntityPlayer player = LD39.instance.getEntityPlayer();
+        World world = player.world;
+        int x = Math.round(((Gdx.input.getX()-LD39.instance.getCamera().position.x)/32) + player.x);
+        int y = Math.round((-(Gdx.input.getY()-LD39.instance.getCamera().position.y)/32) + player.y);
+        if(world.getTileState(x,y).getTile() != Tile.TORCH)
+        world.setTileState(x, y, new TileStateTorch(world.getTileState(x,y).tile, x,y));
+        
+        return true;
     }
 
     @Override
