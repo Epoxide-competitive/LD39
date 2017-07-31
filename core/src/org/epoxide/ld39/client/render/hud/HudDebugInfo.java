@@ -38,9 +38,6 @@ public class HudDebugInfo implements IHud {
         font.draw(batch, "DELTA = " + delta, textX, textY - 230);
         font.draw(batch, "MX = " + Gdx.input.getX(), textX, textY - 250);
         font.draw(batch, "MY = " + Gdx.input.getY(), textX, textY - 270);
-        
-        Vector3 pos = game.getMousePosInGameWorld();
-        font.draw(batch, String.format("Unprojected X:%f Y:%f", pos.x, pos.y), textX, textY - 290);
         batch.end();
     }
 }
