@@ -51,7 +51,8 @@ public class RenderManager {
 
         batch.begin();
         batch.draw(ENTITY_TEXTURE, Gdx.graphics.getWidth() / 2 - LD39.tileWidth / 2, Gdx.graphics.getHeight() / 2 - LD39.tileWidth / 2, LD39.tileWidth, LD39.tileWidth, 1*0.0625f, 1*0.0625f, 0, 0);
-        LD39.instance.getLightMap().addLight(Gdx.graphics.getWidth() / 2 - LD39.tileWidth / 2 + 16, Gdx.graphics.getHeight() / 2 - LD39.tileWidth / 2 + 16, (float) (25- (Math.random()>0.2 ? Math.random() * 2 : 0)), Color.WHITE);
+        float intensity = ((LD39.instance.getEntityPlayer().power/LD39.instance.getEntityPlayer().maxPower) + 10) * (float)(25- (Math.random()>0.2 ? Math.random() * 2 : 0));
+        LD39.instance.getLightMap().addLight(Gdx.graphics.getWidth() / 2 - LD39.tileWidth / 2 + 16, Gdx.graphics.getHeight() / 2 - LD39.tileWidth / 2 + 16, intensity, Color.WHITE);
         batch.end();
     }
 
