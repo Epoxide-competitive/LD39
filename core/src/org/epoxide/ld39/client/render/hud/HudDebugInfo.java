@@ -1,7 +1,11 @@
 package org.epoxide.ld39.client.render.hud;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.epoxide.ld39.LD39;
 import org.epoxide.ld39.entity.EntityPlayer;
+import org.epoxide.ld39.util.RenderUtils;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Camera;
@@ -20,27 +24,32 @@ public class HudDebugInfo implements IHud {
         final EntityPlayer player = game.getEntityPlayer();
         final Camera camera = game.getCamera();
 
-        batch.begin();
-        batch.setShader(game.getDefaultShader());
         final float textX = camera.position.x - Gdx.graphics.getWidth() / 2 + 10;
         final float textY = camera.position.y + Gdx.graphics.getHeight() / 2;
-        font.draw(batch, "FPS: " + Gdx.graphics.getFramesPerSecond(), textX, textY - 10);
-        font.draw(batch, "GL_RENDERER = " + Gdx.gl.glGetString(GL20.GL_RENDERER), textX, textY - 30);
-        font.draw(batch, "GL_VENDOR = " + Gdx.gl.glGetString(GL20.GL_VENDOR), textX, textY - 50);
-        font.draw(batch, "GL_VERSION = " + Gdx.gl.glGetString(GL20.GL_VERSION), textX, textY - 70);
-        font.draw(batch, "WIDTH = " + Gdx.graphics.getWidth(), textX, textY - 90);
-        font.draw(batch, "HEIGHT = " + Gdx.graphics.getHeight(), textX, textY - 110);
-        font.draw(batch, "X = " + player.x, textX, textY - 130);
-        font.draw(batch, "Y = " + player.y, textX, textY - 150);
-        font.draw(batch, "GAMESTATE = " + game.getState(), textX, textY - 170);
-        font.draw(batch, "STEP = " + game.getStep(), textX, textY - 190);
-        font.draw(batch, "ACCUMULATOR = " + game.getAccumulator(), textX, textY - 210);
-        font.draw(batch, "DELTA = " + delta, textX, textY - 230);
-        font.draw(batch, "MX = " + Math.round(((Gdx.input.getX()-LD39.instance.getCamera().position.x)/32) + player.x), textX, textY - 250);
-        font.draw(batch, "MY = " + Math.round((-(Gdx.input.getY()-LD39.instance.getCamera().position.y)/32) + player.y), textX, textY - 270);
-        font.draw(batch, "MTILE = " + game.getWorld().getTileState(Math.round(((Gdx.input.getX()-LD39.instance.getCamera().position.x)/32) + player.x), Math.round((-(Gdx.input.getY()-LD39.instance.getCamera().position.y)/32) + player.y)).tile.getIdentifier().toString(), textX, textY - 290);
-        font.draw(batch, "Health = " + player.power, textX, textY - 310);
-        font.draw(batch, game.getWorld().getTileState((int) player.x, (int) player.y + 1).tile.getIdentifier().toString(), textX, textY - 330);
+        
+        final List<String> list = new ArrayList<>();
+                
+        list.add("FPS: " + Gdx.graphics.getFramesPerSecond());
+        list.add("GL_RENDERER = " + Gdx.gl.glGetString(GL20.GL_RENDERER));
+        list.add("GL_VENDOR = " + Gdx.gl.glGetString(GL20.GL_VENDOR));
+        list.add("GL_VERSION = " + Gdx.gl.glGetString(GL20.GL_VERSION));
+        list.add("WIDTH = " + Gdx.graphics.getWidth());
+        list.add("HEIGHT = " + Gdx.graphics.getHeight());
+        list.add("X = " + player.x);
+        list.add("Y = " + player.y);
+        list.add("GAMESTATE = " + game.getState());
+        list.add("STEP = " + game.getStep());
+        list.add("ACCUMULATOR = " + game.getAccumulator());
+        list.add("DELTA = " + delta);
+        list.add("MX = " + Math.round(((Gdx.input.getX()-LD39.instance.getCamera().position.x)/32) + player.x));
+        list.add("MY = " + Math.round((-(Gdx.input.getY()-LD39.instance.getCamera().position.y)/32) + player.y));
+        list.add("MTILE = " + game.getWorld().getTileState(Math.round(((Gdx.input.getX()-LD39.instance.getCamera().position.x)/32) + player.x), Math.round((-(Gdx.input.getY()-LD39.instance.getCamera().position.y)/32) + player.y)).tile.getIdentifier().toString());
+        list.add("Health = " + player.power);
+        list.add(game.getWorld().getTileState((int) player.x, (int) player.y + 1).tile.getIdentifier().toString());
+        
+        batch.begin();
+        batch.setShader(game.getDefaultShader());
+        RenderUtils.renderMultilineString(batch, font, list, textX, textY, 20);
         batch.end();
     }
 }
