@@ -27,7 +27,7 @@ public class KeyBindMovement extends KeyBindMulti {
         if(!player.hasMotion())
         {
             if (this.direction == Direction.UP) {
-                if (world.getTileState((int) player.x, (int) player.y + 1).tile.isCollidable()) {
+                if (world.getTileState((int) player.x, (int) player.y + 1).tile.isSolid()) {
                     if (player.y + 1 > world.getMapHeight() - 1) {
                         player.y = world.getMapHeight() - 1;
                     }
@@ -38,7 +38,7 @@ public class KeyBindMovement extends KeyBindMulti {
                 }
             }
             else if (this.direction == Direction.DOWN) {
-                if (world.getTileState((int) player.x, (int) player.y - 1).tile.isCollidable()) {
+                if (world.getTileState((int) player.x, (int) player.y - 1).tile.isSolid()) {
                     if (player.y - 1 < 0) {
                         player.y = 0;
                     }
@@ -49,7 +49,7 @@ public class KeyBindMovement extends KeyBindMulti {
                 }
             }
             else if (this.direction == Direction.LEFT) {
-                if (world.getTileState((int) player.x - 1, (int) player.y).tile.isCollidable()) {
+                if (world.getTileState((int) player.x - 1, (int) player.y).tile.isSolid()) {
                     if (player.x - 1 < 0) {
                         player.x = 0;
                     }
@@ -60,7 +60,7 @@ public class KeyBindMovement extends KeyBindMulti {
                 }
             }
             else if (this.direction == Direction.RIGHT) {
-                if (world.getTileState((int) player.x + 1, (int) player.y).tile.isCollidable()) {
+                if (world.getTileState((int) player.x + 1, (int) player.y).tile.isSolid()) {
                     if (player.x + 1 > world.getMapWidth() - 1) {
                         player.x = world.getMapWidth() - 1;
                     }

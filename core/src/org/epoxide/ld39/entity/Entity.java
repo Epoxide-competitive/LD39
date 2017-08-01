@@ -1,9 +1,10 @@
 package org.epoxide.ld39.entity;
 
 import org.epoxide.ld39.world.Direction;
+import org.epoxide.ld39.world.ICollider;
 import org.epoxide.ld39.world.World;
 
-public class Entity {
+public abstract class Entity implements ICollider{
 
     public float x;
     public float y;
@@ -17,6 +18,6 @@ public class Entity {
     
     
     public void update(){
-    
+
     }
 }

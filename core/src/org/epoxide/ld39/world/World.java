@@ -1,8 +1,11 @@
 package org.epoxide.ld39.world;
 
-import java.util.Map.Entry;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Random;
 
+import org.epoxide.ld39.entity.Entity;
 import org.epoxide.ld39.tile.Tile;
 import org.epoxide.ld39.tile.TileState;
 import org.epoxide.ld39.tile.TileStateTorch;
@@ -10,6 +13,7 @@ import org.epoxide.ld39.tile.TileStateTorch;
 public class World {
 
     private final TileState[][] tileMap;
+    private final LinkedList<Entity> entities = new LinkedList<Entity>();
     private final int width;
     private final int height;
 
@@ -36,7 +40,7 @@ public class World {
 
                 Tile genTile = Tile.REGISTRY.getRandomValue(new Random());
                 
-                if (genTile == Tile.VOID || genTile.isCollidable())
+                if (genTile == Tile.VOID || genTile.isSolid())
                     genTile = Tile.WALL;
                 this.tileMap[i][j] = map[i][j] == 1 ? new TileState(genTile, i, j) : new TileState(Tile.FLOOR, i, j);
                 if (map[i][j] != 1 && Math.random() > 0.99) {
@@ -46,6 +50,10 @@ public class World {
         }
     }
 
+    public LinkedList<Entity> getEntities()
+    {
+        return this.entities;
+    }
     public int getMapWidth () {
 
         return this.width;
@@ -73,5 +81,13 @@ public class World {
         }
         
         this.tileMap[x][y] = state;
+    }
+    public boolean checkClear(int x, int y)
+    {
+        if(tileMap[x][y].getTile().isSolid())
+            return false;
+        else if(entities.stream().filter(entity -> entity.isSolid() && entity.x == x && entity.y == y).count() > 0)
+            return false;
+        return true;
     }
 }

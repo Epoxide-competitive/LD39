@@ -3,7 +3,7 @@ package org.epoxide.ld39.entity;
 import org.epoxide.ld39.item.ItemState;
 import org.epoxide.ld39.world.World;
 
-public class EntityItem extends Entity {
+public abstract class EntityItem extends Entity {
     private final ItemState itemState;
     
     public EntityItem(World world, ItemState itemState) {

@@ -40,7 +40,6 @@ public class LD39 extends Game {
     private World world;
     private EntityPlayer entityPlayer;
     private final InputHandler inputHandler = new InputHandler();
-    private List<Entity> entities = new ArrayList<>();
     
     @Override
     public void create () {
@@ -62,7 +61,7 @@ public class LD39 extends Game {
         final int[][] map = new MapHandler(100, 100).map;
         this.world = new World(map);
         this.entityPlayer = new EntityPlayer(this.world);
-        entities.add(entityPlayer);
+        world.getEntities().add(entityPlayer);
         setScreen(new ScreenMainMenu(this));
         
         this.state = GameState.RUNNING;
@@ -79,7 +78,7 @@ public class LD39 extends Game {
     }
 
     public void setState (GameState state) {
-
+        /* fire events related to state change here probably */
         this.state = state;
     }
 
@@ -142,9 +141,8 @@ public class LD39 extends Game {
 
         this.debug = !this.debug;
     }
-    
     public List<Entity> getEntities() {
-        return entities;
+        return world.getEntities();
     }
     
     public InputHandler getInputHandler() {

@@ -1,10 +1,11 @@
 package org.epoxide.ld39.entity;
 
+import org.epoxide.ld39.world.ICollider;
 import org.epoxide.ld39.world.World;
 
 import java.util.Random;
 
-public class EntityPlayer extends Entity {
+public class EntityPlayer extends Entity implements IDamageable, ICollider {
 
     public float power = 100;
     public float maxPower = 100;
@@ -81,7 +82,7 @@ public class EntityPlayer extends Entity {
         while(true){
             int randX = rand.nextInt(world.getMapWidth());
             int randY = rand.nextInt(world.getMapHeight());
-            if(world.getTileState(randX, randY).tile.isCollidable()){
+            if(world.checkClear(randX,randY)){
                 this.x = randX;
                 this.y = randY;
                 break;
@@ -99,6 +100,14 @@ public class EntityPlayer extends Entity {
     public boolean hasMotionY(){
         return motionY !=0;
     }
-    
-    
+
+    @Override
+    public void takeDamage(float amount) {
+        power -= amount;
+    }
+
+    @Override
+    public boolean isSolid() {
+        return true;
+    }
 }
