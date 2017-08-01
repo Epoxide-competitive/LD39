@@ -4,7 +4,7 @@ public class Logger {
     
     private String name;
     
-    public Logger(String name) {
+    protected Logger(String name) {
         
         this.name = name;
     }

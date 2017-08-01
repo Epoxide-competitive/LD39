@@ -7,6 +7,7 @@ import com.badlogic.gdx.Gdx;
 
 public class LogManager {
     
+    private static final List<Logger> loggers = new ArrayList<>();
     private static final List<ILogFilter> filters = new ArrayList<>();
     
     protected static void log(Level level, Logger log, String message, Object... params) {
@@ -67,7 +68,9 @@ public class LogManager {
     
     public static Logger createLogger(String name) {
         
-        return null;
+        final Logger logger = new Logger(name);        
+        loggers.add(logger);
+        return logger;
     }
     
     public static void addFilter(ILogFilter filter) {
