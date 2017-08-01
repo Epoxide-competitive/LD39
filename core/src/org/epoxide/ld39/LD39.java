@@ -11,7 +11,6 @@ import org.epoxide.ld39.logging.Logger;
 import org.epoxide.ld39.world.MapHandler;
 import org.epoxide.ld39.world.World;
 
-import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -24,7 +23,7 @@ public class LD39 extends Game {
 
     public static final float tileWidth = 32f;
     public static final String ID = "ld39";
-    public static final Logger log = LogManager.createLogger(ID);
+    public static final Logger LOG = LogManager.createLogger(ID);
 
     public static LD39 instance;
 
@@ -45,6 +44,12 @@ public class LD39 extends Game {
     
     @Override
     public void create () {
+        
+        LOG.log("Creating game");
+        this.state = GameState.LOADING;
+        
+        printSystemInfo();
+        
         LD39.instance = this;
         this.batch = new SpriteBatch();
         this.font = new BitmapFont();
@@ -57,9 +62,10 @@ public class LD39 extends Game {
         final int[][] map = new MapHandler(100, 100).map;
         this.world = new World(map);
         this.entityPlayer = new EntityPlayer(this.world);
-        this.state = GameState.RUNNING;
         entities.add(entityPlayer);
         setScreen(new ScreenMainMenu(this));
+        
+        this.state = GameState.RUNNING;
     }
 
     @Override
@@ -137,15 +143,39 @@ public class LD39 extends Game {
         this.debug = !this.debug;
     }
     
-    public void setAccumulator(double accumulator) {
-        this.accumulator = accumulator;
-    }
-    
     public List<Entity> getEntities() {
         return entities;
     }
     
     public InputHandler getInputHandler() {
         return inputHandler;
+    }
+    
+    public int getMouseWorldX() {
+        
+        return Math.round(((Gdx.input.getX()-LD39.instance.getCamera().position.x)/32) + this.entityPlayer.x);
+    }
+    
+    public int getMouseWorldY() {
+        
+        return Math.round((-(Gdx.input.getY()-LD39.instance.getCamera().position.y)/32) + this.entityPlayer.y);
+    }
+
+    //TODO re-added but no
+    public void setAccumulator (double d) {
+        
+        this.accumulator = d;
+    }
+    
+    public void printSystemInfo() {
+        
+        LOG.log("OS Name : %s (%s) version ", System.getProperty("os.name"), System.getProperty("os.arch"), System.getProperty("os.version"));
+        LOG.log("Java Version: %s - %s", System.getProperty("java.version"), System.getProperty("java.vendor"));
+        
+        Runtime runtime = Runtime.getRuntime();
+        
+        long totalMB = runtime.totalMemory() / 1024L / 1024L;
+        long freeMB = runtime.freeMemory() / 1024L / 1024L;
+        LOG.log("Memory: %d MB / %d MB", totalMB - freeMB, totalMB);
     }
 }
