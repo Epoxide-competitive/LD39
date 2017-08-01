@@ -11,7 +11,6 @@ import org.epoxide.ld39.logging.Logger;
 import org.epoxide.ld39.world.MapHandler;
 import org.epoxide.ld39.world.World;
 
-import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -137,15 +136,27 @@ public class LD39 extends Game {
         this.debug = !this.debug;
     }
     
-    public void setAccumulator(double accumulator) {
-        this.accumulator = accumulator;
-    }
-    
     public List<Entity> getEntities() {
         return entities;
     }
     
     public InputHandler getInputHandler() {
         return inputHandler;
+    }
+    
+    public int getMouseWorldX() {
+        
+        return Math.round(((Gdx.input.getX()-LD39.instance.getCamera().position.x)/32) + this.entityPlayer.x);
+    }
+    
+    public int getMouseWorldY() {
+        
+        return Math.round((-(Gdx.input.getY()-LD39.instance.getCamera().position.y)/32) + this.entityPlayer.y);
+    }
+
+    //TODO re-added but no
+    public void setAccumulator (double d) {
+        
+        this.accumulator = d;
     }
 }

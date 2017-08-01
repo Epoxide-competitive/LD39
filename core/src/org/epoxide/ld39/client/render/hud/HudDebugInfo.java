@@ -41,9 +41,9 @@ public class HudDebugInfo implements IHud {
         list.add("STEP = " + game.getStep());
         list.add("ACCUMULATOR = " + game.getAccumulator());
         list.add("DELTA = " + delta);
-        list.add("MX = " + Math.round(((Gdx.input.getX()-LD39.instance.getCamera().position.x)/32) + player.x));
-        list.add("MY = " + Math.round((-(Gdx.input.getY()-LD39.instance.getCamera().position.y)/32) + player.y));
-        list.add("MTILE = " + game.getWorld().getTileState(Math.round(((Gdx.input.getX()-LD39.instance.getCamera().position.x)/32) + player.x), Math.round((-(Gdx.input.getY()-LD39.instance.getCamera().position.y)/32) + player.y)).tile.getIdentifier().toString());
+        list.add("MX = " + game.getMouseWorldX());
+        list.add("MY = " + game.getMouseWorldY());
+        list.add("MTILE = " + game.getWorld().getTileState(game.getMouseWorldX(), game.getMouseWorldY()).tile.getIdentifier().toString());
         list.add("Health = " + player.power);
         list.add(game.getWorld().getTileState((int) player.x, (int) player.y + 1).tile.getIdentifier().toString());
         
