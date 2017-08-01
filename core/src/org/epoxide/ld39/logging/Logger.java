@@ -1,7 +1,5 @@
 package org.epoxide.ld39.logging;
 
-import com.badlogic.gdx.Gdx;
-
 public class Logger {
     
     private String name;
@@ -18,16 +16,31 @@ public class Logger {
     
     public void log(String message, Object... params) {
         
-        Gdx.app.log(this.getName(), String.format(message, params));
+        LogManager.log(Level.INFO, this, message, params);
     }
     
     public void debug(String message, Object... params) {
         
-        Gdx.app.debug(this.getName(), String.format(message, params));
+        LogManager.log(Level.DEBUG, this, message, params);
     }
     
     public void error(String message, Object... params) {
         
-        Gdx.app.error(this.getName(), String.format(message, params));
+        LogManager.log(Level.ERROR, this, message, params);
+    }
+    
+    public void log(Throwable throwable, String message, Object... params) {
+        
+        LogManager.log(Level.INFO, this, throwable, message, params);
+    }
+    
+    public void debug(Throwable throwable, String message, Object... params) {
+        
+        LogManager.log(Level.DEBUG, this, throwable, message, params);
+    }
+    
+    public void error(Throwable throwable, String message, Object... params) {
+        
+        LogManager.log(Level.ERROR, this, throwable, message, params);
     }
 }
