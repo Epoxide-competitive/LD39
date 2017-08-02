@@ -12,7 +12,7 @@ public class Tile extends Registerable<Tile> implements ICollider {
 
     public static final Tile VOID = registerTile("void", new Tile());
     public static final Tile WALL = registerTile("wall", new Tile()).setUV(0, 0, 1, 1);
-    public static final Tile FLOOR = registerTile("floor", new Tile()).setUV(1, 0, 2, 1).setSolid(true);
+    public static final Tile FLOOR = registerTile("floor", new Tile()).setUV(1, 0, 2, 1).setSolid(false);
     public static final Tile TORCH = registerTile("torch", new TileVisual()).setUV(4, 0, 5, 1).setSolid(true);
     
     public static final Tile ORE_COAL = registerTile("ore_coal", new Tile()).setUV(5, 0, 6, 1);

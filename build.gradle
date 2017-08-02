@@ -76,8 +76,7 @@ project(":core") {
         compile "com.badlogicgames.gdx:gdx:$gdxVersion"
         compile "com.badlogicgames.gdx:gdx-controllers:$gdxVersion"
         compile "org.epoxide.commons:EpoxideCommons:0.0.14"
-
-
+        compile group: 'com.google.code.gson', name: 'gson', version: '2.7'
     }
 }
 

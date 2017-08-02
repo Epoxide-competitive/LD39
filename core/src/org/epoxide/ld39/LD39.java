@@ -30,7 +30,6 @@ public class LD39 extends Game {
     private boolean debug = true;
     private GameState state;
     private RenderManager renderManager;
-    private SpriteBatch batch;
     private OrthographicCamera camera;
     private ShaderProgram defaultShader;
     private BitmapFont font;
@@ -43,14 +42,13 @@ public class LD39 extends Game {
     
     @Override
     public void create () {
-        
+
         LOG.log("Creating game");
         this.state = GameState.LOADING;
         
         printSystemInfo();
         
         LD39.instance = this;
-        this.batch = new SpriteBatch();
         this.font = new BitmapFont();
         this.camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         this.camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
@@ -89,7 +87,7 @@ public class LD39 extends Game {
 
     public SpriteBatch getBatch () {
 
-        return this.batch;
+        return this.renderManager.getBatch();
     }
 
     public OrthographicCamera getCamera () {

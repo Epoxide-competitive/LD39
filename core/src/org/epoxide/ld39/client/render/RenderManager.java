@@ -25,8 +25,18 @@ public class RenderManager {
     private final IHud debugHud = new HudDebugInfo();
     private final IHud healthHud = new HudHealth();
 
-    public void renderGame (SpriteBatch batch, float delta) {
+    private SpriteBatch batch;
 
+    public RenderManager()
+    {
+        batch = new SpriteBatch();
+    }
+
+    public SpriteBatch getBatch()
+    {
+        return batch;
+    }
+    public void renderGame (SpriteBatch batch, float delta) {
         this.renderTiles(batch, delta, TileLayer.LAYER_TILE_BACKGROUND);
         this.renderEntities(batch, delta);
         this.renderTiles(batch, delta, TileLayer.LAYER_TILE_FOREGROUND);
@@ -34,7 +44,6 @@ public class RenderManager {
         this.renderItems(batch, delta);
         this.renderPlayer(batch, delta);
         this.renderHud(batch, delta);
-
     }
 
     private void renderHud (SpriteBatch batch, float delta) {
@@ -51,7 +60,7 @@ public class RenderManager {
 
         batch.begin();
         batch.draw(ENTITY_TEXTURE, Gdx.graphics.getWidth() / 2 - LD39.tileWidth / 2, Gdx.graphics.getHeight() / 2 - LD39.tileWidth / 2, LD39.tileWidth, LD39.tileWidth, 1*0.0625f, 1*0.0625f, 0, 0);
-        float intensity = ((LD39.instance.getEntityPlayer().power/LD39.instance.getEntityPlayer().maxPower) + 0.02f) * (float)(25- (Math.random()>0.2 ? Math.random() * 2 : 0));
+        float intensity = ((LD39.instance.getEntityPlayer().power/LD39.instance.getEntityPlayer().maxPower) + 0.02f) * (float)(25- (Math.random()>0.1 ? Math.random() * 4 : 0));
         LD39.instance.getLightMap().addLight(Gdx.graphics.getWidth() / 2 - LD39.tileWidth / 2 + 16, Gdx.graphics.getHeight() / 2 - LD39.tileWidth / 2 + 16, intensity, Color.WHITE);
         batch.end();
     }
@@ -104,5 +113,4 @@ public class RenderManager {
         });
         batch.end();
     }
-
 }

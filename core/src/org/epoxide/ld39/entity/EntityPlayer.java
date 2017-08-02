@@ -79,17 +79,16 @@ public class EntityPlayer extends Entity implements IDamageable, ICollider {
     
     private void randomizeLocation(World world){
         Random rand = new Random();
-        while(true){
+        while(true) {
             int randX = rand.nextInt(world.getMapWidth());
             int randY = rand.nextInt(world.getMapHeight());
-            if(world.checkClear(randX,randY)){
+            if (!world.checkClear(randX, randY)) {
                 continue;
             }
             this.x = randX;
             this.y = randY;
             break;
         }
-        
     }
     
     public boolean hasMotion(){

@@ -10,6 +10,6 @@ public class DesktopLauncher {
         config.vSyncEnabled = false;
         config.foregroundFPS = 0;
         config.backgroundFPS = 0;
-        new LwjglApplication(new LD39(), config);
+        LwjglApplication app = new LwjglApplication(new LD39(), config);
     }
 }
