@@ -7,11 +7,23 @@ public class GameManager extends Game {
     private GameState gameState;
     //managers
     private RenderManager renderManager;
-
+    private static GameManager instance;
+    public static GameManager getInstance()
+    {
+        if(instance == null)
+            setInstance(new GameManager());
+        return instance;
+    }
+    public static void setInstance(GameManager g)
+    {
+        if(g != null)
+            instance = g;
+    }
     public GameState getGameState()
     {
         return gameState;
     }
+
     /* TODO create eventlisteners to fire */
     public void setGameState(GameState to)
     {
@@ -40,22 +52,16 @@ public class GameManager extends Game {
         }
     }
 
-    public RenderManager getRenderManager() {
-        return renderManager;
+    public static RenderManager getRenderManager() {
+        return instance.renderManager;
     }
 
-    public void setRenderManager(RenderManager renderManager) {
-        this.renderManager = renderManager;
+    public static void setRenderManager(RenderManager renderManager) {
+        instance.renderManager = renderManager;
     }
 
     @Override
     public void create() {
-        //input
-        //
-        try {
-            throw new  Exception();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+
     }
 }

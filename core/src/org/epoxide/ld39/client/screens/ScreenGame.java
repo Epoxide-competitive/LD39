@@ -43,9 +43,7 @@ public class ScreenGame implements Screen {
     }
     
     private void updateGame (float delta) {
-        
-        game.getInputHandler().onUpdate(delta);
-        game.getEntities().forEach(Entity::update);
+        LD39.instance.update(delta);
     }
     @Override
     public void resize (int width, int height) {

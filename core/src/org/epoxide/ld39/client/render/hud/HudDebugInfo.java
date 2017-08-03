@@ -43,9 +43,15 @@ public class HudDebugInfo implements IHud {
         list.add("DELTA = " + delta);
         list.add("MX = " + game.getMouseWorldX());
         list.add("MY = " + game.getMouseWorldY());
-        list.add("MTILE = " + game.getWorld().getTileState(game.getMouseWorldX(), game.getMouseWorldY()).tile.getIdentifier().toString());
         list.add("Health = " + player.power);
-        list.add(game.getWorld().getTileState((int) player.x, (int) player.y + 1).tile.getIdentifier().toString());
+        Runtime runtime = Runtime.getRuntime();
+
+        long totalMB = runtime.totalMemory() / 1024L / 1024L;
+        long freeMB = runtime.freeMemory() / 1024L / 1024L;
+        list.add("Memory: "+ (totalMB - freeMB) + "mb/"+ totalMB+"mb");
+        //TODO convert to the new framework correctly
+        //list.add("MTILE = " + game.getWorld().getGameObjectsAt(game.getMouseWorldX(), game.getMouseWorldY())..getIdentifier().toString());
+        //list.add(game.getWorld().getGameObjectsAt((int) player.x, (int) player.y + 1).get(0).name.toString());
         
         batch.begin();
         batch.setShader(game.getDefaultShader());

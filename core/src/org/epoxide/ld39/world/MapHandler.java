@@ -110,7 +110,7 @@ public class MapHandler {
         return false;
     }
 
-    String MapToString () {
+    public String mapToString () {
 
         String returnString = String.join(" ", new String[] { "Width:", this.mapWidth + "", "\tHeight:", this.mapHeight + "", "\t% Walls:", this.percentAreWalls + "", "\n" });
 

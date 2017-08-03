@@ -26,7 +26,6 @@ public class JSONParser<T> {
 			e.printStackTrace();
 		}
 	}
-
 	public List<T> getElements(String key) {
 		List<T> returnList = new ArrayList<T>();
 		if (root.get(key) != null) {

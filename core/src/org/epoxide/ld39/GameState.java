@@ -5,5 +5,5 @@ public enum GameState {
     LOADING,
     RUNNING,
     PAUSED,
-    STOPPED;
+    STOPPED
 }

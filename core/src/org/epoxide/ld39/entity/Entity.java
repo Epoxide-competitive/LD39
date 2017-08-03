@@ -1,10 +1,11 @@
 package org.epoxide.ld39.entity;
 
+import org.epoxide.ld39.GameObject;
 import org.epoxide.ld39.world.Direction;
 import org.epoxide.ld39.world.ICollider;
 import org.epoxide.ld39.world.World;
 
-public abstract class Entity implements ICollider{
+public abstract class Entity extends GameObject implements ICollider{
 
     public float x;
     public float y;

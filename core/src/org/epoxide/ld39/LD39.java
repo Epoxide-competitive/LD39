@@ -56,15 +56,19 @@ public class LD39 extends Game {
         this.defaultShader = new ShaderProgram(Gdx.files.internal("assets/ld39/shaders/main.vert"), Gdx.files.internal("assets/ld39/shaders/main.frag"));
         Gdx.graphics.setCursor(Gdx.graphics.newCursor(new Pixmap(Gdx.files.internal("assets/ld39/textures/misc/cursor_64.png")), 0, 0));
         this.renderManager = new RenderManager();
-        final int[][] map = new MapHandler(100, 100).map;
+        final int[][] map = new MapHandler(1000, 1000).map;
         this.world = new World(map);
         this.entityPlayer = new EntityPlayer(this.world);
-        world.getEntities().add(entityPlayer);
+        world.addToWorldCell(0,0, entityPlayer);
         setScreen(new ScreenMainMenu(this));
         
         this.state = GameState.RUNNING;
-    }
 
+    }
+    public void update(float delta)
+    {
+        this.world.update(delta);
+    }
     @Override
     public void render () {
         super.render();
@@ -140,7 +144,7 @@ public class LD39 extends Game {
         this.debug = !this.debug;
     }
     public List<Entity> getEntities() {
-        return world.getEntities();
+        return null;
     }
     
     public InputHandler getInputHandler() {
