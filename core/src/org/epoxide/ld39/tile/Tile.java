@@ -10,11 +10,11 @@ import org.epoxide.ld39.world.ICollider;
 public class Tile extends Registerable<Tile> implements ICollider {
     public static final NamedRegistry<Tile> REGISTRY = new NamedRegistry<>();
 
-    public static final Tile VOID = registerTile("void", new Tile());
-    public static final Tile WALL = registerTile("wall", new Tile()).setUV(0, 0, 1, 1);
+    public static final Tile VOID = registerTile("void", new Tile()).setSolid(true);
+    public static final Tile WALL = registerTile("wall", new Tile()).setUV(0, 0, 1, 1).setSolid(true);
     public static final Tile FLOOR = registerTile("floor", new Tile()).setUV(1, 0, 2, 1).setSolid(false);
     public static final Tile TORCH = registerTile("torch", new TileVisual()).setUV(4, 0, 5, 1).setSolid(true);
-    
+
     public static final Tile ORE_COAL = registerTile("ore_coal", new Tile()).setUV(5, 0, 6, 1);
     public static final Tile ORE_COPPER = registerTile("ore_copper", new Tile()).setUV(6, 0, 7, 1);
     public static final Tile ORE_TIN = registerTile("ore_tin", new Tile()).setUV(7, 0, 8, 1);
@@ -32,7 +32,7 @@ public class Tile extends Registerable<Tile> implements ICollider {
     }
 
     protected Tile setUV (int u, int v, int u2, int v2) {
-        
+
         return setUV((float)u * 0.0625f, (float) v * 0.0625f, (float) u2 * 0.0625f, (float) v2 * 0.0625f);
     }
 

@@ -1,5 +1,7 @@
 package org.epoxide.ld39.client.render;
 
+import com.badlogic.gdx.math.Vector2;
+import org.epoxide.ld39.GameObject;
 import org.epoxide.ld39.LD39;
 import org.epoxide.ld39.client.render.hud.HudDebugInfo;
 import org.epoxide.ld39.client.render.hud.HudHealth;
@@ -37,15 +39,18 @@ public class RenderManager {
         return batch;
     }
     public void renderGame (SpriteBatch batch, float delta) {
-        this.renderTiles(batch, delta, TileLayer.LAYER_TILE_BACKGROUND);
-        this.renderEntities(batch, delta);
-        this.renderTiles(batch, delta, TileLayer.LAYER_TILE_FOREGROUND);
-        this.renderTiles(batch, delta, TileLayer.LAYER_TILE_FOREGROUND);
-        this.renderItems(batch, delta);
+        World world = LD39.instance.getWorld();
+        if(world != null)
+            world.renderWorld(batch, delta);
         this.renderPlayer(batch, delta);
         this.renderHud(batch, delta);
     }
-
+    public static Vector2 posRelativeToCamera(Vector2 pos)
+    {
+        final float renderX = pos.x * LD39.tileWidth - (LD39.instance.getEntityPlayer().x * LD39.tileWidth - Gdx.graphics.getWidth() / 2 + LD39.tileWidth / 2);
+        final float renderY = pos.y * LD39.tileWidth - (LD39.instance.getEntityPlayer().y * LD39.tileWidth - Gdx.graphics.getHeight() / 2 + LD39.tileWidth / 2);
+        return new Vector2(renderX,renderY);
+    }
     private void renderHud (SpriteBatch batch, float delta) {
 
         if (LD39.instance.isDebugEnabled()) {
@@ -69,48 +74,23 @@ public class RenderManager {
         
     }
 
-    private void renderTiles (SpriteBatch batch, float delta, TileLayer layer) {
-
-        final EntityPlayer entityPlayer = LD39.instance.getEntityPlayer();
-        final World world = entityPlayer.world;
-
-        final int x = (int) (entityPlayer.x * LD39.tileWidth - Gdx.graphics.getWidth() / 2 + LD39.tileWidth / 2);
-        final int y = (int) (entityPlayer.y * LD39.tileWidth - Gdx.graphics.getHeight() / 2 + LD39.tileWidth / 2);
-
-        batch.begin();
-        for (int i = 0; i < world.getMapWidth(); i++) {
-            for (int j = 0; j < world.getMapHeight(); j++) {
-                final TileState tileState = world.getTileState(i, j);
-                if (tileState.getTile() != Tile.VOID) {
-                    final float renderX = i * LD39.tileWidth - x;
-                    final float renderY = j * LD39.tileWidth - y;
-                    if (renderX >= -LD39.tileWidth && renderX <= Gdx.graphics.getWidth() && renderY >= -LD39.tileWidth && renderY <= Gdx.graphics.getHeight()) {
-                        if (tileState.shouldRenderLayer(layer)) {
-                            tileState.renderTile(batch, renderX, renderY, LD39.tileWidth, layer);
-                            // Tile tile = tileState.getTile();
-                        }
-                    }
-                }
-            }
-        }
-        batch.end();
-    }
-    
     private void renderItems (SpriteBatch batch, float delta) {
-        
-        final EntityPlayer entityPlayer = LD39.instance.getEntityPlayer();
-        final World world = entityPlayer.world;
-        
-        final int x = (int) (entityPlayer.x * LD39.tileWidth - Gdx.graphics.getWidth() / 2 + LD39.tileWidth / 2);
-        final int y = (int) (entityPlayer.y * LD39.tileWidth - Gdx.graphics.getHeight() / 2 + LD39.tileWidth / 2);
-        
-        batch.begin();
-        LD39.instance.getEntities().stream().filter(entity -> entity instanceof EntityItem).filter(entity -> !((EntityItem)entity).getItemState().isEmpty()).forEach(entity ->{
-            EntityItem item = (EntityItem) entity;
-            final float renderX = item.x * LD39.tileWidth - x;
-            final float renderY = item.y * LD39.tileWidth - y;
-            item.getItemState().renderItem(batch, renderX, renderY, LD39.tileWidth);
-        });
-        batch.end();
+
+    }
+    public int getScreenLeftEdge()
+    {
+        return (int)Math.floor(LD39.instance.getEntityPlayer().x - Gdx.graphics.getWidth()/2);
+    }
+    public int getScreenRightEdge()
+    {
+        return (int)Math.ceil(LD39.instance.getEntityPlayer().x + Gdx.graphics.getWidth()/2);
+    }
+    public int getScreenBottomEdge()
+    {
+        return (int)Math.floor(LD39.instance.getEntityPlayer().y - Gdx.graphics.getHeight()/2);
+    }
+    public int getScreenTopEdge()
+    {
+        return (int)Math.ceil(LD39.instance.getEntityPlayer().y + Gdx.graphics.getHeight()/2);
     }
 }

@@ -1,11 +1,16 @@
 package org.epoxide.ld39.tile;
 
+import com.badlogic.gdx.math.Vector2;
+import org.epoxide.ld39.GameObject;
+import org.epoxide.ld39.client.render.IRenderable;
 import org.epoxide.ld39.client.render.RenderManager;
 import org.epoxide.ld39.client.render.TileLayer;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
-public class TileState {
+import static org.epoxide.ld39.LD39.tileWidth;
+
+public class TileState extends GameObject implements IRenderable {
 
     public final Tile tile;
     private final float x, y;
@@ -28,6 +33,25 @@ public class TileState {
 
     public void renderTile (SpriteBatch batch, float renderX, float renderY, float tileWidth, TileLayer layer) {
 
-        batch.draw(RenderManager.TILE_TEXTURE, renderX, renderY, tileWidth, tileWidth, this.tile.u2, this.tile.v2, this.tile.u, this.tile.v);
+    }
+
+    @Override
+    public void render(SpriteBatch batch, Vector2 screenPos, float delta) {
+        batch.draw(RenderManager.TILE_TEXTURE, screenPos.x,screenPos.y, tileWidth, tileWidth, this.tile.u2, this.tile.v2, this.tile.u, this.tile.v);
+    }
+
+    @Override
+    public int renderLayer() {
+        return 0;
+    }
+
+    @Override
+    public int renderPriority() {
+        return 0;
+    }
+
+    @Override
+    public boolean isOpaque() {
+        return tile.isSolid();//TODO implement tile is opaque
     }
 }

@@ -96,15 +96,11 @@ public class InputHandler implements InputProcessor {
         World world = player.world;
         int x = Math.round(((Gdx.input.getX()-LD39.instance.getCamera().position.x)/32) + player.x);
         int y = Math.round((-(Gdx.input.getY()-LD39.instance.getCamera().position.y)/32) + player.y);
-        if(world.getTileState(x,y).getTile() != Tile.TORCH)
-        world.setTileState(x, y, new TileStateTorch(world.getTileState(x,y).tile, x,y));
-        
         return true;
     }
 
     @Override
     public boolean touchUp (int screenX, int screenY, int pointer, int button) {
-
         return false;
     }
 
