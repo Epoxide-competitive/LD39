@@ -1,24 +1,53 @@
 package org.epoxide.ld39.entity;
 
-import org.epoxide.ld39.GameObject;
-import org.epoxide.ld39.world.Direction;
-import org.epoxide.ld39.world.ICollider;
-import org.epoxide.ld39.world.World;
+import org.epoxide.commons.registry.IRegisterable;
+import org.epoxide.commons.registry.Identifier;
 
-public abstract class Entity extends GameObject implements ICollider{
+import java.util.ArrayList;
+import java.util.List;
 
-    public float x;
-    public float y;
-    public double motionX, motionY;
-    public Direction rotation;
-    public World world;
-
-    public Entity (World world) {
-        this.world = world;
+public class Entity implements IRegisterable<Entity> {
+    private List<EntityComponent> components = null;
+    private Identifier identifier = null;
+    public Entity(String id)
+    {
+        identifier = new Identifier("Entity",id);
+        components = new ArrayList<>();
     }
-    
-    
-    public void update(){
+    public void update(float delta)
+    {
+        for (EntityComponent c: components) {
+            c.update(this, delta);
+        }
+    }
+    public boolean addComponent(EntityComponent c)
+    {
+        //boolean so we can notify if the add failed by returning false
+        if(c != null) {
+            components.add(c);
+            return true;
+        }
+        return false;
+    }
+    public boolean removeComponent(EntityComponent c)
+    {
+        //boolean so we can notify if the add failed by returning false
+        if(c != null) {
+            if(components.contains(c)) {
+                components.remove(c);
+                return true;
+            }
+        }
+        return false;
+    }
 
+    @Override
+    public Entity setIdentifier(Identifier identifier) {
+        return null;
+    }
+
+    @Override
+    public Identifier getIdentifier() {
+        return identifier;
     }
 }
