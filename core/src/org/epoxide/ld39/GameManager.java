@@ -1,12 +1,10 @@
 package org.epoxide.ld39;
 
 import com.badlogic.gdx.Game;
-import org.epoxide.ld39.client.render.RenderManager;
 
 public class GameManager extends Game {
     private GameState gameState;
     //managers
-    private RenderManager renderManager;
     private static GameManager instance;
     public static GameManager getInstance()
     {
@@ -14,10 +12,12 @@ public class GameManager extends Game {
             setInstance(new GameManager());
         return instance;
     }
-    public static void setInstance(GameManager g)
+    public static void setInstance(GameManager to)
     {
-        if(g != null)
-            instance = g;
+        if(instance != null)
+            return;
+        if(to != null)
+            instance = to;
     }
     public GameState getGameState()
     {
@@ -52,16 +52,13 @@ public class GameManager extends Game {
         }
     }
 
-    public static RenderManager getRenderManager() {
-        return instance.renderManager;
-    }
-
-    public static void setRenderManager(RenderManager renderManager) {
-        instance.renderManager = renderManager;
-    }
-
     @Override
     public void create() {
+
+    }
+
+    public static void Begin()
+    {
 
     }
 }
