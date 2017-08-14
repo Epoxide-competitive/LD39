@@ -14,6 +14,11 @@ public class Entity implements IRegisterable<Entity> {
         identifier = new Identifier("Entity",id);
         components = new ArrayList<>();
     }
+    Entity(String id, List<EntityComponent> components)
+    {
+        identifier = new Identifier("Entity",id);
+        this.components = components;
+    }
     public void update(float delta)
     {
         for (EntityComponent c: components) {

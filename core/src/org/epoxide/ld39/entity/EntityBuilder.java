@@ -21,6 +21,11 @@ public class EntityBuilder {
     }
     public EntityBuilder addComponent(String identifier, Object...args)
     {
+
         return this;
+    }
+    public Entity build()
+    {
+        return new Entity(id,components);
     }
 }
