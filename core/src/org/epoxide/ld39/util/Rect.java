@@ -27,6 +27,10 @@ public class Rect {
         this.x = centre.x;
         this.y = centre.y;
     }
+    public Rect(float centreX, float centreY)
+    {
+
+    }
     public boolean inBounds(float x, float y)
     {
         return inXRange(x) && inYRange(y);
@@ -35,11 +39,9 @@ public class Rect {
     {
         if (this.x == x)
             return true;
-        else if(this.x > x)
-            if(x < (x+(length/2)))
+        if(this.x > x && x < (this.x+(length/2)))
                 return true;
-        else if(this.x < x)
-            if(x > (x-(length/2)))
+        if(this.x < x && x > (this.x-(length/2)))
                 return true;
         return false;
     }
@@ -47,12 +49,10 @@ public class Rect {
     {
         if (this.y == y)
             return true;
-        else if(this.y > y)
-            if(y < (y+(height/2)))
-                return true;
-            else if(this.y < y)
-                if(y > (y-(height/2)))
-                    return true;
+        if(this.y > y && y < (this.y+(height/2)))
+            return true;
+        if(this.y < y && y > (this.y-(height/2)))
+            return true;
         return false;
     }
     public void setCentreX(float x)
@@ -71,5 +71,9 @@ public class Rect {
     public void setCentre(Vector2 centre)
     {
         setCentre(centre.x,centre.y);
+    }
+    public void setDimensions(float length, float height)
+    {
+        this.length = length;
     }
 }

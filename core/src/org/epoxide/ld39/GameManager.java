@@ -61,4 +61,14 @@ public class GameManager extends Game {
     {
 
     }
+    protected static void update(float delta)
+    {
+        //TODO game loop runs from here
+
+    }
+
+    @Override
+    public void render() {
+
+    }
 }

@@ -1,5 +1,7 @@
 package org.epoxide.ld39.entity;
 
+import org.epoxide.ld39.EntityManager;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,7 +23,7 @@ public class EntityBuilder {
     }
     public EntityBuilder addComponent(String identifier, Object...args)
     {
-
+        components.add(EntityManager.COMPONENT_REGISTRY.getValue("Sprite").construct(args));
         return this;
     }
     public Entity build()
