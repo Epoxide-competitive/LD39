@@ -23,10 +23,10 @@ public class EntityBuilder {
     }
     public EntityBuilder addComponent(String identifier, Object...args)
     {
-        components.add(EntityManager.COMPONENT_REGISTRY.getValue("Sprite").construct(args));
+        components.add(EntityManager.COMPONENT_REGISTRY.getValue(identifier).construct(args));
         return this;
     }
-    public Entity build()
+    public Entity create()
     {
         return new Entity(id,components);
     }

@@ -24,7 +24,7 @@ public class GameManager extends Game {
         return gameState;
     }
 
-    /* TODO create eventlisteners to fire */
+    /* TODO create event bus */
     public void setGameState(GameState to)
     {
         switch(to)
@@ -51,24 +51,18 @@ public class GameManager extends Game {
             }
         }
     }
-
+    private EntityManager entityManager;
     @Override
     public void create() {
-
-    }
-
-    public static void Begin()
-    {
-
-    }
-    protected static void update(float delta)
-    {
-        //TODO game loop runs from here
 
     }
 
     @Override
     public void render() {
 
+    }
+    protected static void update(float delta)
+    {
+        instance.entityManager.update(delta);
     }
 }
